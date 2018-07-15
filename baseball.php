@@ -106,7 +106,7 @@
 		if($game["status"]["status"] == "Warmup" || $game["status"]["status"] == "Preview" || $game["status"]["status"] == "Pre-Game")
 		{
 			# Game hasn't yet started
-			$gameStringHead   = "";
+			$gameStringHead   = $game["status"]["status"];
 			$gameStringTop    = str_replace(" ", "&nbsp;", str_pad($game["away_name_abbrev"], 3, " "));
 			$gameStringBottom = str_replace(" ", "&nbsp;", str_pad($game["home_name_abbrev"], 3, " ") . "  " . $game["home_time"] . " " . $game["home_time_zone"]);
 		}
