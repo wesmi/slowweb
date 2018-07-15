@@ -2,7 +2,7 @@
 	include_once './config.php';
 	include_once './commonfunctions.php';
 
-	if ($forecastApiKey = "")
+	if ($forecastApiKey == "")
 	{
 		$forecastApiKey = getenv("forecastApiKey");
 	}
