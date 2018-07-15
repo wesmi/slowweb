@@ -2,6 +2,11 @@
 	include_once './config.php';
 	include_once './commonfunctions.php';
 
+	if ($forecastApiKey = "")
+	{
+		$forecastApiKey = getenv("forecastApiKey");
+	}
+
 	# Build the URL we'll use to make the weather call
 	if ($forecastApiKey != "")
 	{
