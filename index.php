@@ -10,6 +10,7 @@
 <ul>
 	<li><a href="/weather.php">Local weather</a></li>
 	<li><a href="/baseball.php">Baseball scores</a></li>
+	<li><a href="/stock.php">Stock report</a></li>
 </ul>
 </body>
 </html>
