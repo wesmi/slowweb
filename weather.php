@@ -1,10 +1,16 @@
 <?php
-	include_once './config.php';
-	include_once './commonfunctions.php';
-
-	if ($forecastApiKey == "")
+	if (!include_once './config.php')
 	{
+		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$forecastApiKey = getenv("forecastApiKey");
+		$forecastLocation = getenv("forecastLocation");
+	}
+
+	if (!include_once './commonfunctions.php')
+	{
+		# If this fails, exit because we need those functions
+		echo "Error loading common functions module.";
+		die;
 	}
 
 	# Build the URL we'll use to make the weather call
@@ -12,6 +18,7 @@
 	{
 		$fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation";
 	} else {
+		# We made it all of the way here without the API key showing up so that's a fatal error
 		echo "Error fetching configuration data.";
 		die;
 	}
