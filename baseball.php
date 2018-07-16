@@ -23,7 +23,7 @@
 	{
 		$games = json_decode($baseball, true);
 	} else {
-		echo "Error fetching baseball data, response code: " . $httpResponse["response_code"];
+		echo "<html><head><title>Baseball</title></head><body>Error fetching baseball data, response code: " . $httpResponse["response_code"] . "\r\n\r\n<!-- Results:\r\n" . $baseball . "\r\n --></body></html>\r\n";
 		die;
 	}
 ?>
