@@ -12,7 +12,10 @@
 	$month = date('m');
 	$day = date('d');
 
-	$url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
+	#$url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
+	#
+	# Apparently we need a workaround...
+	$url = "https://wyvern.org/baseball.php";
 
 	# Fetch the relevant data
 	$baseball = file_get_contents($url);
