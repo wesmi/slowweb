@@ -3,7 +3,14 @@
 	{
 		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$forecastApiKey = getenv("forecastApiKey");
-		$forecastLocation = getenv("forecastLocation");
+		$forecastLocation = getenv("forecastLocation");		// In the format of "lat,lon"
+		$locationApiKey = getenv("locationApiKey");
+	}
+
+	if ($locationApiKey == "")
+	{
+		echo "Error retrieving configuration data.";
+		die;
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -11,6 +18,59 @@
 		# If this fails, exit because we need those functions
 		echo "Error loading common functions module.";
 		die;
+	}
+
+	if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
+	{
+		$locationRequested = true;
+		$devicelat = round($_GET["devicelat"], 4);
+		$devicelon = round($_GET["devicelon"] ,4);
+		# Passed location from location detection page
+		$locationCheckURL = "https://locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
+
+		$locationCheckResponse = file_get_contents($locationCheckURL);
+		$httpResponse = parseHeaders($http_response_header);
+		if ($httpResponse["response_code"] == 200)
+		{
+			$locationCheck = json_decode($locationCheckResponse, true);
+			$forecastPlaceName = $locationCheck["display_name"];
+			$forecastLocation = $devicelat . "," . $devicelon;
+		} else {
+			$locationError = true;
+		}
+	}
+
+	if (isset($_GET["location"]))
+	{
+		# User passed a location in a query
+		# Reset the forecast location to be used by fetching it from the location API
+
+		# Encode the location just in case
+		$locationSearch = urlencode($_GET["location"]);
+		$locationURL = "https://us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
+		$locationError = false;		// We will use this later to inform the user about search results
+		$locationRequested = true;
+
+		# Do the fetch
+		$locationresponse = file_get_contents($locationURL);
+
+		# Check for errors
+		$httpResponse = parseHeaders($http_response_header);
+		if($httpResponse["response_code"] == 200)
+		{
+			# We got a valid reply so reset the forecast location
+			$locationData = json_decode($locationresponse, true);
+
+			# We get the first element of the array because locationiq always returns an array and the first match
+			#  is usually the closest
+			$forecastPlaceName = $locationData[0]["lat"] . "," . $locationData[0]["lon"];
+			$forecastPlaceName = $locationData[0]["display_name"];
+			//echo "Our new forecast location would be: $testForecastLocation<br />\r\n";
+		} else {
+			# We didn't get a valid reply so DON'T reset the forecast location
+			#  but DO set a marker to inform the user that location couldn't be found
+			$locationError = true;
+		}
 	}
 
 	# Build the URL we'll use to make the weather call
@@ -40,11 +100,37 @@
 <html>
 <head>
 	<title>Weather</title>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 </head>
 
 <body>
 <?php
-	echo "Upcoming weather: " . $weatherData['hourly']['summary'];
+	$currentWeather = $weatherData["currently"];
+
+	if ($locationRequested && $locationError)
+	{
+		echo "<font color=\"red\">A location was requested but the location search failed.</font>  Showing the default location data instead.<br />\r\n";
+	}
+
+	if ($locationRequested && !$locationError)
+	{
+		echo "Displaying forecast for $forecastPlaceName<br />\r\n";
+	}
+
+	echo "<h2>Weather data time:</h2>" . date(DATE_RFC822, $weatherData['currently']['time']); 
+
+	echo "<h2>Current conditions:</h2><ul>" .
+		"<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>" . 
+		"<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($wA['windBearing']) . ".</li>" . 
+		"<li>Chance of rain: " . ($currentWeather['precipProbability']*100) . "%<br />" . 
+		"<li>Nearest storm: " . $currentWeather['nearestStormDistance'] . " miles to the " . getCompassDirection($currentWeather['nearestStormBearing']) . ".</li>" . 
+		"<li>Visibility: " . $currentWeather['visibility'] . " miles with " . ($currentWeather['cloudCover']*100) . "% cloud cover.</li>" . 
+		"<li>Pressure: " . $currentWeather['pressure'] . "mB</li>" . 
+		"<li>Relative humidity: " . ($currentWeather['humidity']*100) . "%</li>" . 
+		"<li>Ozone density: " . $currentWeather['ozone'] . "</li>" . 
+		"</ul>\r\n";
+
+	echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'];
 ?>
 </body>
 </html>
