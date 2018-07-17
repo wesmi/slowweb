@@ -19,4 +19,59 @@
 	    }
 	    return $head;
 	}
+
+	# Courtesy of Doug Vanderweide, https://www.dougv.com/2009/07/calculating-the-bearing-and-compass-rose-direction-between-two-latitude-longitude-coordinates-in-php/
+	function getCompassDirection($bearing) {
+		$tmp = round($bearing / 22.5);
+		switch($tmp) {
+		  case 1:
+		     $direction = "NNE";
+		     break;
+		  case 2:
+		     $direction = "NE";
+		     break;
+		  case 3:
+		     $direction = "ENE";
+		     break;
+		  case 4:
+		     $direction = "E";
+		     break;
+		  case 5:
+		     $direction = "ESE";
+		     break;
+		  case 6:
+		     $direction = "SE";
+		     break;
+		  case 7:
+		     $direction = "SSE";
+		     break;
+		  case 8:
+		     $direction = "S";
+		     break;
+		  case 9:
+		     $direction = "SSW";
+		     break;
+		  case 10:
+		     $direction = "SW";
+		     break;
+		  case 11:
+		     $direction = "WSW";
+		     break;
+		  case 12:
+		     $direction = "W";
+		     break;
+		  case 13:
+		     $direction = "WNW";
+		     break;
+		  case 14:
+		     $direction = "NW";
+		     break;
+		  case 15:
+		     $direction = "NNW";
+		     break;
+		  default:
+		     $direction = "N";
+		}
+		return $direction;
+	}
 ?>
