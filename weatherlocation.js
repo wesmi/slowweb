@@ -10,12 +10,10 @@ function getloc()
 
 function error(response)
 {
-	// alert('error in location');
 	window.location.replace(location.protocol + '//' + location.host + '/weather.php');
 }
 
 function success(position)
 {
-	alert('location good');
 	window.location.replace(location.protocol + '//' + location.host + '/weather.php?devicelat=' + position.coords.latitude + '&devicelon=' + position.coords.longitude);
 }
