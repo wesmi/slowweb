@@ -80,22 +80,22 @@
 			if ($stockData["display_name"] != "XZXZXZ")
 			{
 				echo "<b>" . $stockData["display_name"] . "</b><br />\r\n
-					<i>Open:</i> " . $stockData["price_open"] . "</i><br />\r\n
-					<i>Current:</i> " . $stockData["price_current"] . "</i><br />\r\n";
+					<i>Open:</i> " . number_format($stockData["price_open"], 2) . "</i><br />\r\n
+					<i>Current:</i> " . number_format($stockData["price_current"], 2) . "</i><br />\r\n";
 
 				if ($stockData["delta_from_open"] > 0)
 				{
-					echo "<i>Change:</i> <font color=\"green\">" . $stockData["delta_from_open"] . "</font></i><br />\r\n";
+					echo "<i>Change:</i> <font color=\"green\">" . number_format($stockData["delta_from_open"], 2) . "</font></i><br />\r\n";
 				}
 
 				if ($stockData["delta_from_open"] < 0)
 				{
-					echo "<i>Change:</i> <font color=\"red\">" . $stockData["delta_from_open"] . "</font></i><br />\r\n";
+					echo "<i>Change:</i> <font color=\"red\">" . number_format($stockData["delta_from_open"], 2) . "</font></i><br />\r\n";
 				}
 
 				if ($stockData["delta_from_open"] = 0)
 				{
-					echo "<i>Change:</i> <font color=\"black\">" . $stockData["delta_from_open"] . "</font></i><br />\r\n";
+					echo "<i>Change:</i> <font color=\"black\">" . number_format($stockData["delta_from_open"], 2) . "</font></i><br />\r\n";
 				}
 			} else {
 				# API gave us an error, as it often does because it has super low rate limits
