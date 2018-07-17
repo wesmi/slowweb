@@ -108,7 +108,7 @@
 	$currentWeather = $weatherData["currently"];
 	echo "<!-- Weather URL: $fullURL\r\n\r\n";
 	var_dump($currentWeather);
-	echo "\r\n\r\n-->"
+	echo "\r\n\r\n-->";
 
 	if ($locationRequested && $locationError)
 	{
