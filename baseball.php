@@ -159,7 +159,12 @@
 	{
 		echo "No games scheduled for today.";
 	}
+
 ?>
 </tt>
+<?php
+	// Landing page return
+	landReturn();
+?>
 </body>
 </html>

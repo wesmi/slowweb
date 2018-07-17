@@ -131,6 +131,9 @@
 		"</ul>\r\n";
 
 	echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'];
+
+	// Landing page return
+	landReturn();
 ?>
 </body>
 </html>

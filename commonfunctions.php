@@ -1,6 +1,12 @@
 <?php
 	## Common functions used among several files
 
+	function landReturn()
+	{
+		# Function dumps out a horizontal rule and a landing page return footer
+		echo "\r\n<br /><hr noshade /><a href=\"/\">Return to landing page</a>\r\n";
+	}
+
 	# Courtesy of Mangall, http://php.net/manual/en/reserved.variables.httpresponseheader.php#117203
 	function parseHeaders( $headers )
 	{

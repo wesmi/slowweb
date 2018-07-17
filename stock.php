@@ -104,6 +104,9 @@
 
 			echo "<br />\r\n\r\n";
 		}
+
+		// Landing page return
+		landReturn();
 	?>
 </body>
 </html>
