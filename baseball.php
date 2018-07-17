@@ -1,4 +1,10 @@
 <?php
+	if (!include_once './config.php')
+	{
+		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
+		$baseballBackupUrl = getenv("baseballBackupUrl");
+	}
+
 	if (!include_once './commonfunctions.php')
 	{
 		# If this fails, exit because we need those functions
@@ -12,10 +18,7 @@
 	$month = date('m');
 	$day = date('d');
 
-	#$url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
-	#
-	# Apparently we need a workaround...
-	$url = "https://wyvern.org/baseball.php";
+	$url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
 
 	# Fetch the relevant data
 	$baseball = file_get_contents($url);
@@ -26,9 +29,19 @@
 	{
 		$games = json_decode($baseball, true);
 	} else {
-		echo "<html><head><title>Baseball</title></head><body>Error fetching baseball data, response code: " . $httpResponse["response_code"] . "\r\n\r\n<!-- Results:\r\n" . $baseball . "\r\n --></body></html>\r\n";
+		# Try the backup
+		$backupFetched = true;
+		$baseball = file_get_contents($baseballBackupUrl);
+		if (strlen($baseball) < 50)
+		{
+			echo "<html><head><title>Baseball</title></head><body>Error fetching baseball data, response code from primary: " . $httpResponse["response_code"] . " and response length from backup: " . strlen($baseball) . "\r\n\r\n<!-- Results:\r\n" . $baseball . "\r\n --></body></html>\r\n";			
+		} else {
+			$games = json_decode($baseball, true);
+		}
 		die;
 	}
+
+	$games = false;
 ?>
 
 <html>
@@ -38,11 +51,18 @@
 </head>
 
 <body>
+<?php
+	if ($backupFetched)
+	{
+		echo "<!-- Fetched from backup URL -->\r\n";
+	}
+?>
 <tt>
 
 <?php
 	foreach ($games["data"]["games"]["game"] as $game)
 	{
+		$games = true;
 		if ($game["status"]["status"] == "In Progress")
 		{
 			# These games are happening now
@@ -133,6 +153,11 @@
 			echo $gameStringTop . "<br />\r\n";
 			echo $gameStringBottom . "<br /><br />\r\n\r\n";
 		}
+	}
+
+	if (!$games)
+	{
+		echo "No games scheduled for today.";
 	}
 ?>
 </tt>
