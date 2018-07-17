@@ -106,6 +106,9 @@
 <body>
 <?php
 	$currentWeather = $weatherData["currently"];
+	echo "<!-- Weather URL: $fullURL\r\n\r\n";
+	var_dump($currentWeather);
+	echo "\r\n\r\n-->"
 
 	if ($locationRequested && $locationError)
 	{
@@ -121,7 +124,7 @@
 
 	echo "<h2>Current conditions:</h2><ul>" .
 		"<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>" . 
-		"<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($wA['windBearing']) . ".</li>" . 
+		"<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($currentWeather['windBearing']) . ".</li>" . 
 		"<li>Chance of rain: " . ($currentWeather['precipProbability']*100) . "%<br />" . 
 		"<li>Nearest storm: " . $currentWeather['nearestStormDistance'] . " miles to the " . getCompassDirection($currentWeather['nearestStormBearing']) . ".</li>" . 
 		"<li>Visibility: " . $currentWeather['visibility'] . " miles with " . ($currentWeather['cloudCover']*100) . "% cloud cover.</li>" . 
