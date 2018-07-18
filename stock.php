@@ -4,6 +4,14 @@
 		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$alphaVantageKey = getenv("alphaVantageKey");
 		$alphaVantageStocks = getenv("alphaVantageStocks");
+		$requiredCookie = getenv("requiredCookie");
+	}
+
+	if (!include_once './commonfunctions.php')
+	{
+		# If this fails, exit because we need those functions
+		echo "Error loading common functions module.";
+		die;
 	}
 
 	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
@@ -14,13 +22,6 @@
 	if (!($alphaVantageKey && $alphaVantageStocks))
 	{
 		echo "Error loading all config values.";
-		die;
-	}
-
-	if (!include_once './commonfunctions.php')
-	{
-		# If this fails, exit because we need those functions
-		echo "Error loading common functions module.";
 		die;
 	}
 

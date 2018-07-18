@@ -3,11 +3,7 @@
 	{
 		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$baseballBackupUrl = getenv("baseballBackupUrl");
-	}
-
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
+		$requiredCookie = getenv("requiredCookie");
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -15,6 +11,11 @@
 		# If this fails, exit because we need those functions
 		echo "Error loading common functions module.";
 		die;
+	}
+
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
 	}
 
 	# Make sure the time zone is set to Pacific to build the proper game day URL

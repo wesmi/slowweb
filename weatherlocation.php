@@ -1,6 +1,13 @@
 <?php
 	$requiredCookie = getenv("requiredCookie");
 
+	if (!include_once './commonfunctions.php')
+	{
+		# If this fails, exit because we need those functions
+		echo "Error loading common functions module.";
+		die;
+	}
+
 	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
 	{
 		header("Location: " . baseurl() . "/auth.php");

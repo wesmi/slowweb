@@ -5,6 +5,14 @@
 		$forecastApiKey = getenv("forecastApiKey");
 		$forecastLocation = getenv("forecastLocation");		// In the format of "lat,lon"
 		$locationApiKey = getenv("locationApiKey");
+		$requiredCookie = getenv("requiredCookie");
+	}
+
+	if (!include_once './commonfunctions.php')
+	{
+		# If this fails, exit because we need those functions
+		echo "Error loading common functions module.";
+		die;
 	}
 
 	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
@@ -15,13 +23,6 @@
 	if ($locationApiKey == "")
 	{
 		echo "Error retrieving configuration data.";
-		die;
-	}
-
-	if (!include_once './commonfunctions.php')
-	{
-		# If this fails, exit because we need those functions
-		echo "Error loading common functions module.";
 		die;
 	}
 
