@@ -5,6 +5,13 @@
 </head>
 
 <body>
+	<?php
+		if(!$_COOKIE["required"] == getenv("requiredCookie"))
+		{
+			echo "No access.</body></html>\r\n";
+			exit;
+		}
+	?>
 <p align="center">Main Index</p>
 
 <ul>
