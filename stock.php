@@ -77,6 +77,12 @@
     <?php
         $stocks = explode(",", $alphaVantageStocks);
 
+        if (isset($_POST["symbol"]))
+	{
+            # User requested info on one symbol
+            $stocks = explode(",", str_replace(" ", "", $_POST["symbol"]));
+        }
+
         foreach($stocks as $stock)
         {
             $stockData = getStockData($stock);

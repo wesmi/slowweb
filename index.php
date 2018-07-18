@@ -31,6 +31,7 @@
     <li><a href="/baseball.php">Baseball scores</a></li>
     <li><a href="/bus.php">Bus stop information</a></li>
     <li><a href="/stock.php">Stock report</a></li>
+    <li><form method="post" action="/stock.php">Stock search: <input type="text" name="symbol">&nbsp;&nbsp;<input type="submit" value="Go"></form></li>
 </ul>
 </body>
 </html>
