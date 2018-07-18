@@ -1,3 +1,9 @@
+<?php
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
+	}
+?>
 <html>
 <head>
 	<title>Location detection</title>

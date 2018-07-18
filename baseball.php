@@ -5,6 +5,11 @@
 		$baseballBackupUrl = getenv("baseballBackupUrl");
 	}
 
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
+	}
+
 	if (!include_once './commonfunctions.php')
 	{
 		# If this fails, exit because we need those functions

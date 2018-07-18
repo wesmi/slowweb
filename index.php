@@ -1,3 +1,23 @@
+<?php
+	if (!include_once './commonfunctions.php')
+	{
+		# If this fails, exit because we need those functions
+		echo "Error loading common functions module.";
+		die;
+	}
+
+	if (!include_once './config.php')
+	{
+		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
+		$requiredCookie = getenv("requiredCookie");
+	}
+
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
+	}
+?>
+
 <html>
 <head>
 	<title>Slow Web Landing</title>
@@ -5,13 +25,6 @@
 </head>
 
 <body>
-	<?php
-		if(!$_COOKIE["required"] == getenv("requiredCookie"))
-		{
-			echo "No access.</body></html>\r\n";
-			exit;
-		}
-	?>
 <p align="center">Main Index</p>
 
 <ul>

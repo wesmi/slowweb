@@ -7,6 +7,109 @@
 		echo "\r\n<br /><hr noshade /><a href=\"/\">Return to landing page</a>\r\n";
 	}
 
+	function getAzureKeyVaultValue($secretname, $keyvaultname, $appid, $tenant, $subscription, $appsecret)
+	{
+		// resource = https://vault.azure.net
+		// client_id
+		// client_secret
+		// grant_type = client_credentials
+
+		// url = https://login.windows.net/$tenant/oauth2/token
+		// json decode the response to fetch access_token
+
+		$url = "https://login.windows.net/$tenant/oauth2/token";
+		$postVals = array('resource' => 'https://vault.azure.net',
+							'client_id' => $appid,
+							'client_secret' => $appsecret,
+							'grant_type' => 'client_credentials');
+		$options = array(
+					'http' => array(
+						'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+						'method' => "POST",
+						'content' => http_build_query($postVals)
+					)
+				);
+		$context = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+		if ($result === FALSE)
+		{
+			// TODO: Error handling
+			return false;
+		} else {
+			// This is where we get the access token
+			$azureReply = json_decode($result, true);
+			$accesstoken = $azureReply["access_token"];
+		}
+
+		// once we have the access_token, make a request to the vault URL and ask for the secretname
+		//  https://vaultname.vault.azure.net/secrets/secretname/versions?api-version=2016-10-01
+
+		$url = "https://$keyvaultname.vault.azure.net/secrets/$secretname/versions?api-version=2016-10-01";
+		// $values = array()
+		//  save to $values[enabled][unixtime] = value
+
+		$options = array(
+					'http' => array(
+						'header' => "Authorization: Bearer $accesstoken\r\n",
+						'method' => 'GET'
+					)
+				);
+		$context = stream_context_create($options);
+		$result = file_get_contents($url, false, $context);
+		if ($result === FALSE)
+		{
+			$url = "";
+		} else {
+			$secretlookup = json_decode($result, true);
+			$currenttimestamp = 0;
+			foreach ($secretlookup["value"] as $s)
+			{
+				if ($s["attributes"]["enabled"] == "true")
+				{
+					if ($currenttimestamp < $s["attributes"]["created"])
+					{
+						$currenttimestamp = $s["attributes"]["created"];
+						$linktofetch = $s["id"];
+					} else {
+						// Older secret so do nothing
+						//  Leaving this here for future debugging
+					}
+				}
+			}
+
+			// We have a single link to go get
+			$url = $linktofetch . "?api-version=2016-10-01";
+			$options = array(
+						'http' => array(
+							'header' => "Authorization: Bearer $accesstoken\r\n",
+							'method' => 'GET'
+						)
+					);
+			$context = stream_context_create($options);
+			$result = file_get_contents($url, false, $context);
+			if ($result === FALSE)
+			{
+				$secretvalue = "";
+			} else {
+				$secretresults = json_decode($result, true);
+				$secretvalue = $secretresults["value"];
+			}
+		}
+
+		return $secretvalue;
+	// end of function
+	}
+
+	function baseurl()
+	{
+	    if(isset($_SERVER['HTTPS'])){
+	        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+	    } else {
+	        $protocol = 'http';
+	    }
+	    	return $protocol . "://" . $_SERVER['HTTP_HOST'];
+	}
+
 	# Courtesy of Mangall, http://php.net/manual/en/reserved.variables.httpresponseheader.php#117203
 	function parseHeaders( $headers )
 	{

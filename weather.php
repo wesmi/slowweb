@@ -7,6 +7,11 @@
 		$locationApiKey = getenv("locationApiKey");
 	}
 
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
+	}
+
 	if ($locationApiKey == "")
 	{
 		echo "Error retrieving configuration data.";

@@ -6,6 +6,11 @@
 		$alphaVantageStocks = getenv("alphaVantageStocks");
 	}
 
+	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
+	{
+		header("Location: " . baseurl() . "/auth.php");
+	}
+
 	if (!($alphaVantageKey && $alphaVantageStocks))
 	{
 		echo "Error loading all config values.";
