@@ -80,7 +80,7 @@
     # Build the URL we'll use to make the weather call
     if ($forecastApiKey != "")
     {
-        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation";
+        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,daily,alerts,flags";
     } else {
         # We made it all of the way here without the API key showing up so that's a fatal error
         echo "Error fetching configuration data.";
