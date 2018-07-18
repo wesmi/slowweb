@@ -1,6 +1,39 @@
 <?php
 	## Common functions used among several files
 
+	function getObaStopData($stopid)
+	{
+		# Asks the OBA API for arrivals and departures for a given stop, error checks, and then
+		#	decodes the data
+
+		# API URL format is: http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/STOPNUM.json?key=APIKEY
+
+		global $obaApiKey;
+
+		# Build the URL we'll use to make the weather call
+		if ($obaApiKey != "")
+		{
+			$fullURL = "http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/$stopid.json?key=$obaApiKey";
+		} else {
+			# We made it all of the way here without the API key showing up so that's a fatal error
+			return false;
+		}
+
+		# Fetch the data
+		$response = file_get_contents($fullURL);
+
+		# Parse the HTTP headers and make sure we got a valid response
+
+		$httpResponse = parseHeaders($http_response_header);
+		if($httpResponse["response_code"] == 200)
+		{
+			$stopData = json_decode($response, true);
+			return $stopData;
+		} else {
+			return false;
+		}
+	}
+
 	function landReturn()
 	{
 		# Function dumps out a horizontal rule and a landing page return footer
@@ -28,14 +61,10 @@
 
 	function getAzureKeyVaultValue($secretname, $keyvaultname, $appid, $tenant, $subscription, $appsecret)
 	{
-		// resource = https://vault.azure.net
-		// client_id
-		// client_secret
-		// grant_type = client_credentials
+		# This function gets ONLY the newest, enabled version of a secret and returns the value of the secret
+		#	as its response.  The secretname is presumed to be stored in the caller for use if needed.
 
-		// url = https://login.windows.net/$tenant/oauth2/token
-		// json decode the response to fetch access_token
-
+		# Make the first call to get the bearer token
 		$url = "https://login.windows.net/$tenant/oauth2/token";
 		$postVals = array('resource' => 'https://vault.azure.net',
 							'client_id' => $appid,
@@ -60,12 +89,10 @@
 			$accesstoken = $azureReply["access_token"];
 		}
 
-		// once we have the access_token, make a request to the vault URL and ask for the secretname
-		//  https://vaultname.vault.azure.net/secrets/secretname/versions?api-version=2016-10-01
+		# Once we have the access_token, make a request to the vault URL and ask for the secretname
+		# Versions of secrets are at: https://vaultname.vault.azure.net/secrets/secretname/versions?api-version=2016-10-01
 
 		$url = "https://$keyvaultname.vault.azure.net/secrets/$secretname/versions?api-version=2016-10-01";
-		// $values = array()
-		//  save to $values[enabled][unixtime] = value
 
 		$options = array(
 					'http' => array(
@@ -85,6 +112,8 @@
 			{
 				if ($s["attributes"]["enabled"] == "true")
 				{
+					# Secret timestamps are stored as UNIX time so we can simply compare the numeric values without
+					#	having to convert
 					if ($currenttimestamp < $s["attributes"]["created"])
 					{
 						$currenttimestamp = $s["attributes"]["created"];
@@ -92,11 +121,12 @@
 					} else {
 						// Older secret so do nothing
 						//  Leaving this here for future debugging
+						//	TODO: Stop using different comment styles
 					}
 				}
 			}
 
-			// We have a single link to go get
+			// We have a single link to go get that contains our secret value
 			$url = $linktofetch . "?api-version=2016-10-01";
 			$options = array(
 						'http' => array(
@@ -106,6 +136,9 @@
 					);
 			$context = stream_context_create($options);
 			$result = file_get_contents($url, false, $context);
+
+			## TODO: Should we check the HTTP return code here?
+			
 			if ($result === FALSE)
 			{
 				$secretvalue = "";
@@ -116,7 +149,6 @@
 		}
 
 		return $secretvalue;
-	// end of function
 	}
 
 	function baseurl()
@@ -202,4 +234,43 @@
 		}
 		return $direction;
 	}
+
+    /**
+     * Function to calculate date or time difference.
+     *
+     * Function to calculate date or time difference. Returns an array or
+     * false on error.
+     *
+     * @author       J de Silva                             <giddomains@gmail.com>
+     * @copyright    Copyright &copy; 2005, J de Silva
+     * @link         http://www.gidnetwork.com/b-16.html    Get the date / time difference with PHP
+     * @param        string                                 $start
+     * @param        string                                 $end
+     * @return       array
+     *
+     * NB: Need to modify this to accept datetime so as to avoid doing the string conversion.
+     * Also modified to take out error checking for negative number returns since this is desired for this operation.
+     */
+    function getTimeDiff($start,$end)
+    {
+            $uts['start'] = strtotime( $start );
+            $uts['end'] = strtotime( $end );
+            if( $uts['start']!==-1 && $uts['end']!==-1 )
+            {
+                    $diff = $uts['end'] - $uts['start'];
+                    if( $days=intval((floor($diff/86400))) )
+                            $diff = $diff % 86400;
+                    if( $hours=intval((floor($diff/3600))) )
+                            $diff = $diff % 3600;
+                    if( $minutes=intval((floor($diff/60))) )
+                            $diff = $diff % 60;
+                    $diff = intval( $diff );
+                    return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
+            }
+            else
+            {
+                    trigger_error( "Invalid date/time data detected", E_USER_WARNING );
+            }
+            return( false );
+    }
 ?>
