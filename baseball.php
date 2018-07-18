@@ -16,6 +16,110 @@
 
     authCheck($doauth);
 
+    function displayGameData($gameObj)
+    {
+        if ($gameObj["status"]["status"] == "In Progress")
+        {
+            # These games are happening now
+            #
+            #      1  2  3  4  5  6  7  8  9  R  H  E
+            # XXX
+            # YYY
+            $gameStringHead   = "   ";
+            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
+            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
+            $gameRunning = true;
+
+            $currentInning = 1;
+            # Make a line score with each inning
+
+            # The API doesn't return an array of innings if we're still in the first, so handle that case
+            if ($gameObj["status"]["inning"] == "1")
+            {
+                # We're in the first inning so build out the line score on that
+                $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
+                $gameStringTop     = $gameStringTop     . str_pad($gameObj["linescore"]["r"]["away"], 3, " ", STR_PAD_LEFT);
+                $gameStringBottom  = $gameStringBottom  . str_pad($gameObj["linescore"]["r"]["home"], 3, " ", STR_PAD_LEFT);
+            } else {
+                foreach($gameObj["linescore"]["inning"] as $inning)
+                {
+                    # We're out of the first so loop
+                    $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
+                    $gameStringTop     = $gameStringTop     . str_pad($inning["away"], 3, " ", STR_PAD_LEFT);
+                    $gameStringBottom  = $gameStringBottom  . str_pad($inning["home"], 3, " ", STR_PAD_LEFT);
+                    $currentInning++;
+                }
+            }
+
+            # Add the RHE suffix
+            $gameStringHead    = $gameStringHead    . "  R  H  E";
+            $gameStringTop     = $gameStringTop     . " " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
+                                                    . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
+                                                    . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
+            $gameStringBottom  = $gameStringBottom  . " " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
+                                                    . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
+                                                    . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+        }
+
+        if ($gameObj["status"]["status"] == "Final")
+        {
+            # Handler for final games
+            $gameStringHead   = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E";
+            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") 
+                                . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
+                                . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
+                                . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
+            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") 
+                                . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
+                                . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
+                                . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+
+            if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
+            {
+                # Away team won
+                $gameStringTop = "<b>" . $gameStringTop . "</b>";
+            } else {
+                # Home team won
+                $gameStringBottom = "<b>" . $gameStringBottom . "</b>"; 
+            }
+
+            if (count($gameObj["linescore"]["inning"]) > 9)
+            {
+                # Greater than 9 innings so note that on the bottom
+                # YYY  12 19  2  F/12
+                $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+            }
+        }
+
+        if($gameObj["status"]["status"] == "Warmup" || $gameObj["status"]["status"] == "Preview" || $gameObj["status"]["status"] == "Pre-Game")
+        {
+            # Game hasn't yet started
+            $gameStringHead   = $gameObj["status"]["status"];
+            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
+            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
+        }
+
+        if ($gameRunning)
+        {
+            # Want to highlight which team is currently batting, so underline their line score, but only if the game is running
+            echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
+            if ($gameObj["status"]["inning_state"] == "Top")
+            {
+                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringTop) . "</u><br />\r\n";
+                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
+            } else {
+                echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
+                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</u><br /><br />\r\n\r\n";                
+            }
+            $gameRunning = false;
+        } else {
+            # If the game isn't running, put out the data with no formatting
+            echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
+            echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
+            echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
+        }
+    }
+
     # Make sure the time zone is set to Pacific to build the proper game day URL
     date_default_timezone_set('America/Los_Angeles');
     $year = date('Y');
@@ -23,6 +127,14 @@
     $day = date('d');
 
     $url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
+
+    # Put in beginnings of moving back and forth by date
+    
+    if (is_numeric($_GET["d"]) && is_numeric($_GET["m"]) && is_numeric($_GET["y"]))
+    {
+        # All of the values are numeric so we can try to get them
+        $url = "http://gd2.mlb.com/components/game/mlb/year_" . $_GET["y"] . "/month_" . str_pad($_GET["m"], 2, "0", STR_PAD_LEFT) . "/day_" . str_pad($_GET["d"], 2, "0", STR_PAD_LEFT) . "/master_scoreboard.json";
+    }
 
     # Fetch the relevant data
     $baseball = file_get_contents($url);
@@ -45,7 +157,7 @@
         die;
     }
 
-    $games = false;
+    $gamesShown = false;
 ?>
 
 <html>
@@ -64,115 +176,28 @@
 <tt>
 
 <?php
-    foreach ($games["data"]["games"]["game"] as $game)
+    # Have to handle the case where there's only one game in the result set
+    if (isset($games["data"]["games"]["game"][0]))
     {
-        $games = true;
-        if ($game["status"]["status"] == "In Progress")
+        # Multiple games are listed so loop
+        foreach ($games["data"]["games"]["game"] as $game)
         {
-            # These games are happening now
-            #
-            #      1  2  3  4  5  6  7  8  9  R  H  E
-            # XXX
-            # YYY
-            $gameStringHead   = "   ";
-            $gameStringTop    = str_pad($game["away_name_abbrev"], 3, " ");
-            $gameStringBottom = str_pad($game["home_name_abbrev"], 3, " ");
-            $gameRunning = true;
-
-            $currentInning = 1;
-            # Make a line score with each inning
-
-            # The API doesn't return an array of innings if we're still in the first, so handle that case
-            if ($game["status"]["inning"] == "1")
-            {
-                # We're in the first inning so build out the line score on that
-                $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
-                $gameStringTop     = $gameStringTop     . str_pad($game["linescore"]["r"]["away"], 3, " ", STR_PAD_LEFT);
-                $gameStringBottom  = $gameStringBottom  . str_pad($game["linescore"]["r"]["home"], 3, " ", STR_PAD_LEFT);
-            } else {
-                foreach($game["linescore"]["inning"] as $inning)
-                {
-                    # We're out of the first so loop
-                    $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
-                    $gameStringTop     = $gameStringTop     . str_pad($inning["away"], 3, " ", STR_PAD_LEFT);
-                    $gameStringBottom  = $gameStringBottom  . str_pad($inning["home"], 3, " ", STR_PAD_LEFT);
-                    $currentInning++;
-                }
-            }
-
-            # Add the RHE suffix
-            $gameStringHead    = $gameStringHead    . "  R  H  E";
-            $gameStringTop     = $gameStringTop     . " " . str_pad($game["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($game["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($game["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
-            $gameStringBottom  = $gameStringBottom  . " " . str_pad($game["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($game["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($game["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+            $gamesShown = true;
+            displayGameData($game);
         }
-
-        if ($game["status"]["status"] == "Final")
+    } else {
+        if (isset($games["data"]["games"]["game"]["links"]))
         {
-            # Handler for final games
-            $gameStringHead   = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E";
-            $gameStringTop    = str_pad($game["away_name_abbrev"], 3, " ") 
-                                . "  " . str_pad($game["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($game["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($game["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
-            $gameStringBottom = str_pad($game["home_name_abbrev"], 3, " ") 
-                                . "  " . str_pad($game["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($game["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($game["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
-
-            if ($game["linescore"]["r"]["away"] > $game["linescore"]["r"]["home"])
-            {
-                # Away team won
-                $gameStringTop = "<b>" . $gameStringTop . "</b>";
-            } else {
-                # Home team won
-                $gameStringBottom = "<b>" . $gameStringBottom . "</b>"; 
-            }
-
-            if (count($game["linescore"]["inning"]) > 9)
-            {
-                # Greater than 9 innings so note that on the bottom
-                # YYY  12 19  2  F/12
-                $gameStringBottom = $gameStringBottom . "  F/" . count($game["linescore"]["inning"]);
-            }
-        }
-
-        if($game["status"]["status"] == "Warmup" || $game["status"]["status"] == "Preview" || $game["status"]["status"] == "Pre-Game")
-        {
-            # Game hasn't yet started
-            $gameStringHead   = $game["status"]["status"];
-            $gameStringTop    = str_pad($game["away_name_abbrev"], 3, " ");
-            $gameStringBottom = str_pad($game["home_name_abbrev"], 3, " ") . "  " . $game["home_time"] . " " . $game["home_time_zone"];
-        }
-
-        if ($gameRunning)
-        {
-            # Want to highlight which team is currently batting, so underline their line score, but only if the game is running
-            echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
-            if ($game["status"]["inning_state"] == "Top")
-            {
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringTop) . "</u><br />\r\n";
-                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
-            } else {
-                echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</u><br /><br />\r\n\r\n";                
-            }
-            $gameRunning = false;
-        } else {
-            # If the game isn't running, put out the data with no formatting
-            echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
-            echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-            echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
+            $gamesShown = true;
+            displayGameData($games["data"]["games"]["game"]);
         }
     }
 
-    if (!$games)
+    if (!$gamesShown)
     {
         echo "No games scheduled for today.";
     }
+
 
 ?>
 </tt>
