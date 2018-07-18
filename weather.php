@@ -44,13 +44,13 @@
 		}
 	}
 
-	if (isset($_GET["location"]))
+	if (isset($_POST["location"]))
 	{
-		# User passed a location in a query
+		# User passed a location in a form
 		# Reset the forecast location to be used by fetching it from the location API
 
 		# Encode the location just in case
-		$locationSearch = urlencode($_GET["location"]);
+		$locationSearch = urlencode($_POST["location"]);
 		$locationURL = "https://us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
 		$locationError = false;		// We will use this later to inform the user about search results
 		$locationRequested = true;
@@ -67,7 +67,7 @@
 
 			# We get the first element of the array because locationiq always returns an array and the first match
 			#  is usually the closest
-			$forecastPlaceName = $locationData[0]["lat"] . "," . $locationData[0]["lon"];
+			$forecastLocation = $locationData[0]["lat"] . "," . $locationData[0]["lon"];
 			$forecastPlaceName = $locationData[0]["display_name"];
 			//echo "Our new forecast location would be: $testForecastLocation<br />\r\n";
 		} else {
