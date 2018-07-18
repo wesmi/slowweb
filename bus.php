@@ -79,6 +79,9 @@
 			}
 		?>
 	</tt>
-
+<?php
+	// Landing page return
+	landReturn();
+?>
 </body>
 </html>
