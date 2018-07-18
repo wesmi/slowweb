@@ -1,4 +1,6 @@
 <?php
+	$requiredCookie = getenv("requiredCookie");
+
 	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
 	{
 		header("Location: " . baseurl() . "/auth.php");
