@@ -23,15 +23,20 @@ You can do it two ways.
 * PHP 7.0 or better
 * php-json
 
-Copy the files to a suitable place and set up config.php with the configuration values given below.  Note that cookie auth currently doesn't work with a local install so you'll have to modify the files.  (There's an open issue to generalize this into a function that can be turned on or off and is suitable for either install method.)
+* Copy the files to a suitable place
+* Set up config.php with the configuration values given below
+* Set installtype to "onprem"
+* Set the overridevalue to be the codeword you want to use to permit access.
 
 ### Azure install
 
 * Make a Linux-based Azure web app
-* Make a key vault resource, set up an override secret in it
+* Make a key vault resource, set up an override secret in it (see below for config settings)
 * Set up an Azure application and give it access to the key vault
 * Sync the files however you like, probably git deployment (you can mirror this repo once it is public)
 * Set app settings with the configuration values given below
+* Set installtype to "azure"
+* Set overridevalue to be the name of the secret stored in the key vault
 
 ### Configuration values
 
@@ -43,6 +48,8 @@ Set these values, either as $ variables in a config.php or as Azure web app sett
 * alphaVantageKey
 * alphaVantageStocks
 * locationApiKey
+* doauth
+* installtype
 
 #### These are the values for the key vault app
 
@@ -52,6 +59,8 @@ Set these values, either as $ variables in a config.php or as Azure web app sett
 * tenant
 * keyvaultname
 
-#### This is the override value stored in the key vault
+#### Two possible choices for this value
+
+It is either the codeword to permit access (onprem install) or the name of the secret stored in the key vault (azure install).
 
 * overridevalue
