@@ -55,7 +55,7 @@
 	} else {
 		if ($message)
 		{
-			echo $message . "<br />";
+			echo $message . "<br /><br /><a href=\"/\">Click here to go back home</a>\r\n";
 		}
 ?>
 <form method="post" action="<?php baseurl() . "/auth.php"; ?>">
