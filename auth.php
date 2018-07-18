@@ -64,6 +64,8 @@
 	<input type="hidden" name="checkauth" value="checkauth">
 </form>
 <?php
+
+		echo "<a href=\"https://" . $_SERVER["HTTP_HOST"] . "/auth.php\">Click here for encrypted access</a>\r\n";
 	}
 ?>
 </body>
