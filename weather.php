@@ -6,6 +6,7 @@
 		$forecastLocation = getenv("forecastLocation");		// In the format of "lat,lon"
 		$locationApiKey = getenv("locationApiKey");
 		$requiredCookie = getenv("requiredCookie");
+		$doauth = boolval(getenv("doauth"));  # Special case, should be true or false
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -15,10 +16,7 @@
 		die;
 	}
 
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
-	}
+	authCheck($doauth);
 
 	if ($locationApiKey == "")
 	{

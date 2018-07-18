@@ -9,6 +9,7 @@
 		$tenant = getenv("tenant");
 		$keyvaultname = getenv("keyvaultname");
 		$overridevalue = getenv("overridevalue");
+		$installtype = getenv("installtype");
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -23,15 +24,23 @@
 	{
 		// We've entered by asking for authentication so make sure
 		$checkvalue = $_POST["sentstring"];
-		$thesecret = getAzureKeyVaultValue($overridevalue, $keyvaultname, $appid, $tenant, $subscription, $appsecret);
+		if ($installtype == "onprem")
+		{
+			$thesecret = $overridevalue;
+		}
 
-		if ($checkvalue = $thesecret)
+		if ($installtype == "azure")
+		{
+			$thesecret = getAzureKeyVaultValue($overridevalue, $keyvaultname, $appid, $tenant, $subscription, $appsecret);
+		}
+
+		if ($checkvalue == $thesecret)
 		{
 			// The proper value has been entered, store the cookie
-			$result = setcookie("accesscontrol", $requiredCookie, time() + (86400 * 365), "/", $_SERVER["HTTP_HOST"]);
+			$result = setcookie("accesscontrol", $requiredCookie, time() + (86400 * 365), "/");
 			if ($result)
 			{
-				$message = "Access granted.";
+				$message = "Access granted.  <a href=\"/\">Click here to return</a>\r\n";
 			} else {
 				$message = "Cookie not set.";
 			}

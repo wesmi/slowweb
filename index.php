@@ -10,12 +10,10 @@
 	{
 		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$requiredCookie = getenv("requiredCookie");
+		$doauth = boolval(getenv("doauth"));  # Special case, should be true or false
 	}
 
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
-	}
+	authCheck($doauth);
 ?>
 
 <html>

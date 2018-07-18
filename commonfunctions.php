@@ -7,6 +7,25 @@
 		echo "\r\n<br /><hr noshade /><a href=\"/\">Return to landing page</a>\r\n";
 	}
 
+	function authCheck($doauth)
+	{
+		# We want the previously-defined requiredCookie, if available
+		global $requiredCookie;
+
+		# $doauth in config is set to true if we want to check, false if we don't care
+		if ($doauth)
+		{	
+			# Must be called before other outputs because it redirects via header
+			#  If cookie is not set, exit
+			if($_COOKIE["accesscontrol"] != $requiredCookie)
+			{
+				header("Location: " . baseurl() . "/auth.php");
+			}
+		} else {
+			return;
+		}
+	}
+
 	function getAzureKeyVaultValue($secretname, $keyvaultname, $appid, $tenant, $subscription, $appsecret)
 	{
 		// resource = https://vault.azure.net

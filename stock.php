@@ -5,6 +5,7 @@
 		$alphaVantageKey = getenv("alphaVantageKey");
 		$alphaVantageStocks = getenv("alphaVantageStocks");
 		$requiredCookie = getenv("requiredCookie");
+		$doauth = boolval(getenv("doauth"));  # Special case, should be true or false
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -14,10 +15,7 @@
 		die;
 	}
 
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
-	}
+	authCheck($doauth);
 
 	if (!($alphaVantageKey && $alphaVantageStocks))
 	{

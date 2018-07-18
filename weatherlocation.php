@@ -1,5 +1,10 @@
 <?php
-	$requiredCookie = getenv("requiredCookie");
+	if (!include_once './config.php')
+	{
+		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
+		$requiredCookie = getenv("requiredCookie");
+		$doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+	}
 
 	if (!include_once './commonfunctions.php')
 	{
@@ -8,10 +13,7 @@
 		die;
 	}
 
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
-	}
+	authCheck($doauth);
 ?>
 <html>
 <head>

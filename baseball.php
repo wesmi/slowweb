@@ -4,6 +4,7 @@
 		# We're OK if this dies because we can try loading from the environment, which The Cloud will do
 		$baseballBackupUrl = getenv("baseballBackupUrl");
 		$requiredCookie = getenv("requiredCookie");
+		$doauth = boolval(getenv("doauth"));  # Special case, should be true or false
 	}
 
 	if (!include_once './commonfunctions.php')
@@ -13,10 +14,7 @@
 		die;
 	}
 
-	if(!$_COOKIE["accesscontrol"] == $requiredCookie)
-	{
-		header("Location: " . baseurl() . "/auth.php");
-	}
+	authCheck($doauth);
 
 	# Make sure the time zone is set to Pacific to build the proper game day URL
 	date_default_timezone_set('America/Los_Angeles');
