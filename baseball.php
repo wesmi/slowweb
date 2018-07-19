@@ -20,7 +20,7 @@
     function displayGameData($gameObj)
     {
         global $favTeams;
-        $favArray = explode(",", str_replace(" ", "", $favTeams);
+        $favArray = explode(",", str_replace(" ", "", $favTeams));
 
         if ($gameObj["status"]["status"] == "In Progress")
         {
