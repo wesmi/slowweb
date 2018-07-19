@@ -20,6 +20,12 @@
 <head>
     <title>Slow Web Landing</title>
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+    <style>
+        a:link { color: #0000FF; }
+        a:visited { color: #0000FF; }
+        a:hover { color: #00FF00; }
+        a:active { color: #FF0000; }
+    </style>
 </head>
 
 <body>
