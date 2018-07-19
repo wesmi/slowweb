@@ -61,9 +61,13 @@
                                                     . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
         }
 
-        if ($gameObj["status"]["status"] == "Final")
+        if ($gameObj["status"]["status"] == "Final" || $gameObj["status"]["status"] == "Completed Early")
         {
-            # Handler for final games
+            # Handler for final games, regardless of how they ended
+            #
+            # So far, two states found: Final and Completed Early
+            #   Latter means done in fewer than 9 innings
+            #   Former can mean more than 9 innings
             $gameStringHead   = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E";
             $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") 
                                 . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
@@ -83,11 +87,17 @@
                 $gameStringBottom = "<b>" . $gameStringBottom . "</b>"; 
             }
 
-            if (count($gameObj["linescore"]["inning"]) > 9)
+            if (count($gameObj["linescore"]["inning"]) != 9)
             {
-                # Greater than 9 innings so note that on the bottom
+                # Done in other than than 9 innings so note that on the bottom
                 # YYY  12 19  2  F/12
                 $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+            }
+            
+            if (isset($gameObj["status"]["note"])
+            {
+                # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
             }
         }
 
