@@ -5,6 +5,7 @@
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
         $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+        $favTeams = "SEA,TEX";
     }
 
     if (!include_once './commonfunctions.php')
@@ -18,6 +19,9 @@
 
     function displayGameData($gameObj)
     {
+        global $favTeams;
+        $favArray = explode(",", str_replace(" ", "", $favTeams);
+
         if ($gameObj["status"]["status"] == "In Progress")
         {
             # These games are happening now
@@ -108,6 +112,12 @@
             $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
             $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
         }
+        
+        if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
+        {
+            $closeDiv = "</div>";
+            echo "<div style=\"background-color:#66CCFF;\">";
+        }
 
         if ($gameRunning)
         {
@@ -116,18 +126,20 @@
             if ($gameObj["status"]["inning_state"] == "Top")
             {
                 echo "<u>" . str_replace(" ", "&nbsp;", $gameStringTop) . "</u><br />\r\n";
-                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
+                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</u><br /><br />\r\n\r\n";                
+                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</u><br /><br />\r\n\r\n";                
             }
             $gameRunning = false;
         } else {
             # If the game isn't running, put out the data with no formatting
             echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
             echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-            echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br /><br />\r\n\r\n";
+            echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
         }
+        
+        $closeDiv = "";
     }
 
     # Make sure the time zone is set to Pacific to build the proper game day URL

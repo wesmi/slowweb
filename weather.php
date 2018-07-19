@@ -24,6 +24,8 @@
         die;
     }
 
+    date_default_timezone_set('America/Los_Angeles');
+
     if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
     {
         $locationRequested = true;
