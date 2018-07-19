@@ -5,7 +5,7 @@
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
         $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
-        $favTeams = "SEA,TEX";
+        $favTeams = getenv("favTeams");
     }
 
     if (!include_once './commonfunctions.php')
