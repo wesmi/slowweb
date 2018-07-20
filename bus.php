@@ -60,7 +60,7 @@
                             }
                         }
                     }
-                } else
+                } else {
                     $routeResults = false;
                 }
 
