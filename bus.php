@@ -16,7 +16,21 @@
         die;
     }
 
+    authCheck($doauth);
+
     date_default_timezone_set('America/Los_Angeles');
+    
+    if (isset($_POST["search"]))
+    {
+        # Search has been done, gotta figure out which kind
+        switch($_POST["type]")
+            case "route":
+                echo "Not yet implemented, showing default data.<br />\r\n";
+                break;
+            case "stop":
+                header("Location: " . baseurl() . "/bus.php?stopid=" . urlencode($_POST["search"]));
+                break;
+    }
 
     if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
     {
@@ -38,7 +52,6 @@
         }
     }
 
-    authCheck($doauth);
 ?>
 <html>
 <head>
@@ -51,7 +64,7 @@
         <?
             $doStops = explode(",", $obaPrefStops);
             
-            if (isset($_GET["stopid"])
+            if (isset($_GET["stopid"]))
             {
                 $doStops = array($_GET["stopid"]);
             }
