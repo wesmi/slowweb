@@ -102,7 +102,7 @@
 
                 foreach ($stopsFound as $stop)
                 {
-                    echo "<li><a href=\"/bus.php?stopid=" . $stop["id"] . "\">" . $stop["code"] . "</a> - " . $stop["name"] . " (" . $stop["direction"] . ")</li>\r\n";
+                    echo "<li><a href=\"/bus.php?stopid=" . $stop["code"] . "\">" . $stop["code"] . "</a> - " . $stop["name"] . " (" . $stop["direction"] . ")</li>\r\n";
                 }
                 
                 echo "</ul>\r\n";
