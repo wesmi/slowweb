@@ -77,7 +77,7 @@
                 $doStops = array();
                 
                 # Now we go ask about nearby stops
-                $fullURL = "http://api.pugetsound.onebusaway.org/api/where/stops-for-location.json?key=$obaApiKey&lat=$lat&lon=$lon&radius=200";
+                $fullURL = "http://api.pugetsound.onebusaway.org/api/where/stops-for-location.json?key=$obaApiKey&lat=$devicelat&lon=$devicelon&radius=200";
                 $callResults = file_get_contents($fullURL);
 
                 $stopJson = json_decode($callResults, true);
@@ -95,7 +95,6 @@
                         echo "Displaying stops near your location:<br /><ul>\r\n\r\n";
                         $stopsFound = $stopJson["data"]["list"];
                     }
-
                 } else {
                     $locationError = true;
                 }
