@@ -23,7 +23,7 @@
     if (isset($_POST["search"]))
     {
         # Search has been done, gotta figure out which kind
-        switch($_POST["type]")
+        switch($_POST["type"])
             case "route":
                 echo "Not yet implemented, showing default data.<br />\r\n";
                 break;
