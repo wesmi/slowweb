@@ -18,6 +18,26 @@
 
     date_default_timezone_set('America/Los_Angeles');
 
+    if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
+    {
+        $locationRequested = true;
+        $devicelat = round($_GET["devicelat"], 4);
+        $devicelon = round($_GET["devicelon"] ,4);
+        # Passed location from location detection page
+        $locationCheckURL = "https://locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
+
+        $locationCheckResponse = file_get_contents($locationCheckURL);
+        $httpResponse = parseHeaders($http_response_header);
+        if ($httpResponse["response_code"] == 200)
+        {
+            $locationCheck = json_decode($locationCheckResponse, true);
+            $forecastPlaceName = $locationCheck["display_name"];
+            $forecastLocation = $devicelat . "," . $devicelon;
+        } else {
+            $locationError = true;
+        }
+    }
+
     authCheck($doauth);
 ?>
 <html>
@@ -30,6 +50,48 @@
     <tt>
         <?
             $doStops = explode(",", $obaPrefStops);
+            
+            if (isset($_GET["stopid"])
+            {
+                $doStops = array($_GET["stopid"]);
+            }
+            
+            if ($locationRequested)
+            {
+                # First, we clear out $doStops so it won't be processed later on
+                $doStops = array();
+                
+                # Now we go ask about nearby stops
+                $fullURL = "http://api.pugetsound.onebusaway.org/api/where/stops-for-location.json?key=$obaApiKey&lat=$lat&lon=$lon&radius=200";
+                $callResults = file_get_contents($fullURL);
+
+                $stopJson = json_decode($callResults, true);
+                $httpResponse = parseHeaders($http_response_header);
+                if ($httpResponse["response_code"] == 200)
+                {
+                    $stopJson = json_decode($callResults, true);
+                    if ($stopJson["code"] > 399)
+                    {
+                        # Set an empty array as that's a failure
+                        $stopsFound = array();
+                        echo "No stops found near your location.<br />\r\n";
+                    } else {
+                        # Display our stops
+                        echo "Displaying stops near your location:<br /><ul>\r\n\r\n";
+                        $stopsFound = $stopJson["data"]["list"];
+                    }
+
+                } else {
+                    $locationError = true;
+                }
+
+                foreach ($stopsFound as $stop)
+                {
+                    echo "<li><a href=\"/bus.php?stopid=" . $stop["id"] . "\">" . $stop["code"] . "</a> - " . $stop["name"] . " (" . $stop["direction"] . ")</li>\r\n";
+                }
+                
+                echo "</ul>\r\n";
+            }
 
             foreach ($doStops as $stop)
             {
