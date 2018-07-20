@@ -37,7 +37,7 @@
     <li><a href="/baseball.php">Baseball scores</a></li>
     <li><form method="get" action="/baseball.php">Baseball search: <input type="text" name="m" maxlength="2" size="2">/<input type="text" name="d" maxlength="2" size="2">/<input type="text" name="y" maxlength="4" size="4">&nbsp;&nbsp;<input type="submit" value="Go"></form></li>
     <li><a href="/bus.php">Bus stop information</a> (<a href="/buslocation.php">Bus stops near you</a>)</li>
-    <li><form method="post" action="/bus.php">Bus search: <input type="text" name="search">&nbsp;<input type="radio" name="type" id="Stop" value="stop"><label for="stop">Stop</label>&nbsp;<input type="radio" name="type" id="Route" value="route"><label for="route">Route</label>&nbsp;&nbsp;<input type="submit" value="Go"></form></li>
+    <li><form method="post" action="/bus.php">Bus search: <input type="text" name="search">&nbsp;<input type="radio" name="type" id="Stop" value="stop" checked><label for="stop">Stop</label>&nbsp;<input type="radio" name="type" id="Route" value="route"><label for="route">Route</label>&nbsp;&nbsp;<input type="submit" value="Go"></form></li>
     <li><a href="/stock.php">Stock report</a></li>
     <li><form method="post" action="/stock.php">Stock search: <input type="text" name="symbol">&nbsp;&nbsp;<input type="submit" value="Go"></form></li>
 </ul>

@@ -68,7 +68,8 @@
             
             if (isset($_GET["stopid"]))
             {
-                $doStops = array($_GET["stopid"]);
+                # Only supporting KCMetro (agency ID "1") stops
+                $doStops = array("1_" . $_GET["stopid"]);
             }
             
             if ($locationRequested)
@@ -147,7 +148,7 @@
                 }
 
                 if ($stopShown) {
-                    echo "<br /><br />\r\n";
+                    echo "<br />\r\n";
                     $stopShown = false;
                 } else {
                     echo "No trip data available for this stop.<br /><br />\r\n";
