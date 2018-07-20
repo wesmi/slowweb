@@ -24,12 +24,14 @@
     {
         # Search has been done, gotta figure out which kind
         switch($_POST["type"])
+        {
             case "route":
                 echo "Not yet implemented, showing default data.<br />\r\n";
                 break;
             case "stop":
                 header("Location: " . baseurl() . "/bus.php?stopid=" . urlencode($_POST["search"]));
                 break;
+        }
     }
 
     if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
