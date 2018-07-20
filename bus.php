@@ -26,6 +26,7 @@
         switch($_POST["type"])
         {
             case "route":
+                $routeNumber = $_POST["search"];
                 if ($routeNumber >= 500 && $routeNumber <= 599)
                 {
                     // Sound Transit
