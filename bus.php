@@ -53,14 +53,11 @@
                                         // We need this because Metro's schedule URLs expect a 0-padded number
                                         $routeStringFormatted = str_pad($routeInfo["shortName"], 3, "0", STR_PAD_LEFT);
                                         $responseString = "King County Metro route " . $routeInfo["shortName"] . " is <i>" . $routeInfo["description"] . "</i> and its schedule can be <a href=\"http://kingcounty.gov/depts/transportation/metro/schedules-maps/" . $routeStringFormatted . ".aspx\">found here</a>.";
-                                        break;
                                 case 40:
                                         // Sound Transit
                                         // For some reason, ST uses longName instead of description for their friendly route descriptions.
                                         $responseString = "Sound Transit route " . $routeInfo["shortName"] . " is <i>" . $routeInfo["longName"] . "</i> and its schedule can be <a href=\"http://www.soundtransit.org/schedules/st-express-bus/" . $routeInfo["shortName"] . "\">found here</a>.";
-                                        break;
                             }
-                            break;
                         }
                     }
                 } else
