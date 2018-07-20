@@ -26,7 +26,51 @@
         switch($_POST["type"])
         {
             case "route":
-                echo "Not yet implemented, showing default data.<br />\r\n";
+                if ($routeNumber >= 500 && $routeNumber <= 599)
+                {
+                    // Sound Transit
+                    $fullURL = "http://api.pugetsound.onebusaway.org/api/where/routes-for-agency/40.json?key=" . $obaApiKey;
+                } else if ($routeNumber >= 1 && $routeNumber <= 399)
+                {
+                    // King County Metro
+                    $fullURL = "http://api.pugetsound.onebusaway.org/api/where/routes-for-agency/1.json?key=" . $obaApiKey;
+                }
+                $callResults = file_get_contents($fullURL);
+                $locationCheckResponse = file_get_contents($locationCheckURL);
+                $httpResponse = parseHeaders($http_response_header);
+                $routeResults = false;
+                if ($httpResponse["response_code"] == 200)
+                {
+                    $routeJson = json_decode($callResults, true);
+                    foreach ($routeJson["data"]["list"] as $r)
+                    {
+                        if ($r["shortName"] == $routeNumber)
+                        {
+                            $routeResults = true;
+                            switch ($r["agencyId"]) {
+                                case 1:
+                                        // King County Metro
+                                        // We need this because Metro's schedule URLs expect a 0-padded number
+                                        $routeStringFormatted = str_pad($routeInfo["shortName"], 3, "0", STR_PAD_LEFT);
+                                        $responseString = "King County Metro route " . $routeInfo["shortName"] . " is <i>" . $routeInfo["description"] . "</i> and its schedule can be <a href=\"http://kingcounty.gov/depts/transportation/metro/schedules-maps/" . $routeStringFormatted . ".aspx\">found here</a>.";
+                                        break;
+                                case 40:
+                                        // Sound Transit
+                                        // For some reason, ST uses longName instead of description for their friendly route descriptions.
+                                        $responseString = "Sound Transit route " . $routeInfo["shortName"] . " is <i>" . $routeInfo["longName"] . "</i> and its schedule can be <a href=\"http://www.soundtransit.org/schedules/st-express-bus/" . $routeInfo["shortName"] . "\">found here</a>.";
+                                        break;
+                            }
+                            break;
+                        }
+                    }
+                } else
+                    $routeResults = false;
+                }
+
+                // Now we have to loop through the array we got back and look for the route number that matches shortName
+                // Set the marker to indicate we haven't done anything
+
+                $noResults = true;
                 break;
             case "stop":
                 header("Location: " . baseurl() . "/bus.php?stopid=" . urlencode($_POST["search"]));
@@ -64,6 +108,13 @@
 <body>
     <tt>
         <?
+        
+            if ($routeResults)
+            {
+                echo "</tt>$responseString<tt>";
+                $doStops = array();
+            }
+        
             $doStops = explode(",", $obaPrefStops);
             
             if (isset($_GET["stopid"]))
