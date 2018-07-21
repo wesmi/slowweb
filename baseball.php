@@ -131,11 +131,11 @@
             echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
             if ($gameObj["status"]["inning_state"] == "Top")
             {
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringTop) . "</u><br />\r\n";
+                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringTop) . "</div>\r\n";
                 echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</u><br /><br />\r\n\r\n";
+                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</div><br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
