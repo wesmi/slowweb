@@ -72,7 +72,7 @@
             # So far, two states found: Final and Completed Early
             #   Latter means done in fewer than 9 innings
             #   Former can mean more than 9 innings
-            $gameStringHead   = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E";
+            $gameStringHead   = "<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E</u>";
             $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ")
                                 . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
                                 . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
@@ -128,14 +128,14 @@
         if ($gameRunning)
         {
             # Want to highlight which team is currently batting, so underline their line score, but only if the game is running
-            echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
+            echo "<u>" . str_replace(" ", "&nbsp;", $gameStringHead) . "</u><br />\r\n";
             if ($gameObj["status"]["inning_state"] == "Top")
             {
                 echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringTop) . "</div>\r\n";
                 echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</div><br />\r\n\r\n";
+                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>$closeDiv<br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
