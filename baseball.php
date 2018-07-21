@@ -22,140 +22,154 @@
         global $favTeams;
         $favArray = explode(",", str_replace(" ", "", $favTeams));
 
-        if ($gameObj["status"]["status"] == "Postponed")
+        switch ($gameObj["status"]["status"])
         {
-            switch ($gameObj["status"]["ind"])
-            {
-                case "DI":
-                    $postponeReason = "Inclement weather";
-                    break;
-                case "DR":
-                    $postponeReason = "Rain";
-                    break;
-                default:
-                    $postponeReason = "Other";
-            }
-
-            # Game has been postponed so use final code and display reason
-            $gameStringHead   = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
-            $gameStringTop    = "Postponed - " . $postponeReason;
-
-            if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
-            {
-                # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
-                $gameStringBottom = $gameObj["status"]["note"];
-            } else {
-                $gameStringBottom = "";
-            }
-            
-            $gameRunning == false;
-        }
-        
-        if ($gameObj["status"]["status"] == "In Progress")
-        {
-            # These games are happening now
-            #
-            #      1  2  3  4  5  6  7  8  9  R  H  E
-            # XXX
-            # YYY
-            $gameStringHead   = "   ";
-            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
-            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
-            $gameRunning = true;
-
-            $currentInning = 1;
-            # Make a line score with each inning
-
-            # The API doesn't return an array of innings if we're still in the first, so handle that case
-            if ($gameObj["status"]["inning"] == "1")
-            {
-                # We're in the first inning so build out the line score on that
-                $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
-                $gameStringTop     = $gameStringTop     . str_pad($gameObj["linescore"]["r"]["away"], 3, " ", STR_PAD_LEFT);
-                $gameStringBottom  = $gameStringBottom  . str_pad($gameObj["linescore"]["r"]["home"], 3, " ", STR_PAD_LEFT);
-            } else {
-                foreach($gameObj["linescore"]["inning"] as $inning)
+            case "Postponed":
+                switch ($gameObj["status"]["ind"])
                 {
-                    # We're out of the first so loop
-                    $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
-                    $gameStringTop     = $gameStringTop     . str_pad($inning["away"], 3, " ", STR_PAD_LEFT);
-                    $gameStringBottom  = $gameStringBottom  . str_pad($inning["home"], 3, " ", STR_PAD_LEFT);
-                    $currentInning++;
+                    case "DI":
+                        $postponeReason = "Inclement weather";
+                        break;
+                    case "DR":
+                        $postponeReason = "Rain";
+                        break;
+                    default:
+                        $postponeReason = "Other";
                 }
-            }
 
-            # Add the RHE suffix
-            $gameStringHead    = $gameStringHead    . "  R  H  E";
-            if ($gameObj["status"]["is_no_hitter"] == "Y")
-            {
-                $gameStringHead    = $gameStringHead    . " (NO HITTER)";
-            }
+                # Game has been postponed so use final code and display reason
+                $gameStringHead   = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
+                $gameStringTop    = "Postponed - " . $postponeReason;
 
-            if ($gameObj["status"]["is_perfect_game"] == "Y")
-            {
-                $gameStringHead    = $gameStringHead    . " (PERFECT GAME)";
-            }
+                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                {
+                    # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
+                    $gameStringBottom = $gameObj["status"]["note"];
+                } else {
+                    $gameStringBottom = "";
+                }
+                
+                $gameRunning == false;
+                break;
+            
+            case "In Progress":
+                # These games are happening now
+                #
+                #      1  2  3  4  5  6  7  8  9  R  H  E
+                # XXX
+                # YYY
+                $gameStringHead   = "   ";
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
+                $gameRunning = true;
 
-            $gameStringTop     = $gameStringTop     . " " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
-            $gameStringBottom  = $gameStringBottom  . " " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
-                                                    . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
-        }
+                $currentInning = 1;
+                # Make a line score with each inning
 
-        if ($gameObj["status"]["status"] == "Final" || $gameObj["status"]["status"] == "Completed Early" || $gameObj["status"]["status"] == "Game Over")
-        {
-            # Handler for final games, regardless of how they ended
-            #
-            # So far, two states found: Final and Completed Early
-            #   Latter means done in fewer than 9 innings
-            #   Former can mean more than 9 innings
-            $gameStringHead   = "<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E</u>";
-            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ")
-                                . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
-                                . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
-                                . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
-            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ")
-                                . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT)
-                                . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT)
-                                . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+                # The API doesn't return an array of innings if we're still in the first, so handle that case
+                if ($gameObj["status"]["inning"] == "1")
+                {
+                    # We're in the first inning so build out the line score on that
+                    $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
+                    $gameStringTop     = $gameStringTop     . str_pad($gameObj["linescore"]["r"]["away"], 3, " ", STR_PAD_LEFT);
+                    $gameStringBottom  = $gameStringBottom  . str_pad($gameObj["linescore"]["r"]["home"], 3, " ", STR_PAD_LEFT);
+                } else {
+                    foreach($gameObj["linescore"]["inning"] as $inning)
+                    {
+                        # We're out of the first so loop
+                        $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
+                        $gameStringTop     = $gameStringTop     . str_pad($inning["away"], 3, " ", STR_PAD_LEFT);
+                        $gameStringBottom  = $gameStringBottom  . str_pad($inning["home"], 3, " ", STR_PAD_LEFT);
+                        $currentInning++;
+                    }
+                }
 
-            if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
-            {
-                # Away team won
-                $gameStringTop = "<b>" . $gameStringTop . "</b>";
-            } else {
-                # Home team won
-                $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
-            }
+                # Add the RHE suffix
+                $gameStringHead    = $gameStringHead    . "  R  H  E";
+                if ($gameObj["status"]["is_no_hitter"] == "Y")
+                {
+                    $gameStringHead    = $gameStringHead    . " (NO HITTER)";
+                }
 
-            if (count($gameObj["linescore"]["inning"]) != 9)
-            {
-                # Done in other than than 9 innings so note that on the bottom
-                # YYY  12 19  2  F/12
-                $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
-            }
+                if ($gameObj["status"]["is_perfect_game"] == "Y")
+                {
+                    $gameStringHead    = $gameStringHead    . " (PERFECT GAME)";
+                }
 
-            if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
-            {
-                # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
-                $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
-            }
-        }
+                $gameStringTop     = $gameStringTop     . " " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
+                                                        . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
+                                                        . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
+                $gameStringBottom  = $gameStringBottom  . " " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
+                                                        . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
+                                                        . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+                break;
 
-        if($gameObj["status"]["status"] == "Warmup" || $gameObj["status"]["status"] == "Preview" || $gameObj["status"]["status"] == "Pre-Game" || $gameObj["status"]["status"] == "Delayed Start")
-        {
-            # Game hasn't yet started
-            $gameStringHead   = $gameObj["status"]["status"];
-            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
-            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
+            case "Final":
+            case "Completed Early":
+            case "Game Over":
+                # Handler for final games, regardless of how they ended
+                $gameStringHead   = "<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E</u>";
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ")
+                                    . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
+                                    . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
+                                    . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ")
+                                    . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT)
+                                    . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT)
+                                    . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
 
-            if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
-            {
-                # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
-                $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
-            }
+                if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
+                {
+                    # Away team won
+                    $gameStringTop = "<b>" . $gameStringTop . "</b>";
+                } else {
+                    # Home team won
+                    $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
+                }
+
+                if (count($gameObj["linescore"]["inning"]) != 9)
+                {
+                    # Done in other than than 9 innings so note that on the bottom
+                    # YYY  12 19  2  F/12
+                    $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+                }
+
+                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                {
+                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+                }
+                break;
+
+            case "Warmup":
+            case "Preview":
+            case "Pre-Game":
+            case "Delayed Start":
+                # Game hasn't yet started
+                $gameStringHead   = $gameObj["status"]["status"];
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
+
+                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                {
+                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+                }
+                break;
+
+            default:
+                # Some other game type we've not encountered
+                $gameStringHead = "Unknown type: " . $gameObj["status"]["status"];
+                $gameStringTop = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
+                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                {
+                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    $gameStringBottom = $gameObj["status"]["note"];
+                } else {
+                    $gameStringBottom = "";
+                }
+                break;
+            // End of switch statement
         }
 
         if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
