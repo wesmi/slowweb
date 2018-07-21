@@ -57,12 +57,12 @@
 
             # Add the RHE suffix
             $gameStringHead    = $gameStringHead    . "  R  H  E";
-            if ($game["status"]["is_no_hitter"] == "Y")
+            if ($gameObj["status"]["is_no_hitter"] == "Y")
             {
                 $gameStringHead    = $gameStringHead    . " (NO HITTER)";
             }
 
-            if ($game["status"]["is_perfect_game"] == "Y")
+            if ($gameObj["status"]["is_perfect_game"] == "Y")
             {
                 $gameStringHead    = $gameStringHead    . " (PERFECT GAME)";
             }
