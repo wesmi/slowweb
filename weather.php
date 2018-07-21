@@ -82,7 +82,7 @@
     # Build the URL we'll use to make the weather call
     if ($forecastApiKey != "")
     {
-        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,daily,alerts,flags";
+        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,alerts,flags";
     } else {
         # We made it all of the way here without the API key showing up so that's a fatal error
         echo "Error fetching configuration data.";
@@ -136,7 +136,70 @@
         "<li>Ozone density: " . $currentWeather['ozone'] . "</li>" . 
         "</ul>\r\n";
 
-    echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'];
+    echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />";
+
+    // Do the next few days' forecast
+    echo "<ul>\r\n";
+
+    // Set a limit of four days
+    $i = 0;
+    while ($i < 4)
+    {
+        $d = $wa["daily"]["data"][$i];
+
+        // Use emoji for the weather status
+        switch($d["icon"])
+        {
+            case "clear-day":
+                $icon = "&#x2600";
+                break;
+            case "clear-night":
+                $icon = "&#x1f318";
+                break;
+            case "rain":
+                $icon = "&#x1f327";
+                break;
+            case "snow":
+                $icon = "&#x1f328";
+                break;
+            case "sleet":
+                $icon = "&#x2744";
+                break;
+            case "wind":
+                $icon = "&#x1f4a8";
+                break;
+            case "fog":
+                $icon = "&#x1f32b";
+                break;
+            case "cloudy":
+                $icon = "&#x2601";
+                break;
+            case "partly-cloudy-day":
+                $icon = "&#x26c5";
+                break;
+            case "partly-cloudy-night":
+                $icon = "&#x1f318";
+                break;
+            default:
+                // If the API doesn't give us anything we expect, return a rainbow
+                $icon = "&#x1f308";
+                break;
+        }
+
+        echo "<li>";
+        echo date("D", $d["time"]) . " - ";
+        echo "Hi: " . number_format($d["temperatureHigh"]) . "  Lo: " . number_format($d["temperatureLow"]) . "  ";
+        echo "Sum: $icon  ";
+        echo "R? " . ($d["precipProbability"] * 100) . "%  ";
+        echo "SUp: " . date("H:i", $d["sunriseTime"]) . " / SDn: " . date("H:i", $d["sunsetTime"]);
+        echo "</li>\r\n";
+        $i++;
+    }
+    
+    // Finish out the upcoming forecast segment
+    echo "</ul>\r\n";
+    
+    echo "<small><a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a></small>\r\n";
 
     // Landing page return
     landReturn();
