@@ -186,13 +186,14 @@
                 break;
         }
 
+        echo "<tt>\r\n";
         echo "<li>";
         echo date("D", $d["time"]) . " - ";
-        echo "Hi: " . number_format($d["temperatureHigh"]) . "  Lo: " . number_format($d["temperatureLow"]) . "  ";
-        echo "Sum: $icon  ";
-        echo "R? " . ($d["precipProbability"] * 100) . "%  ";
-        echo "SUp: " . date("H:i", $d["sunriseTime"]) . " / SDn: " . date("H:i", $d["sunsetTime"]);
-        echo "</li>\r\n";
+        echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;";
+        echo "Today: $icon&nbsp;&nbsp;";
+        echo "Rain? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";
+        echo "SUp: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;SDn: " . date("H:i", $d["sunsetTime"]);
+        echo "</li>\r\n</tt>\r\n";
         $i++;
     }
     
