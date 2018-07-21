@@ -56,18 +56,15 @@
             }
 
             # Add the RHE suffix
-            if ($game["status"]["is_no_hitter"])
+            $gameStringHead    = $gameStringHead    . "  R  H  E";
+            if ($game["status"]["is_no_hitter"] == "Y")
             {
-                $gameStringHead    = $gameStringHead    . "  R  H  E (NO HITTER)";
-            } else {
-                $gameStringHead    = $gameStringHead    . "  R  H  E";
+                $gameStringHead    = $gameStringHead    . " (NO HITTER)";
             }
 
-            if ($game["status"]["is_perfect_game"])
+            if ($game["status"]["is_perfect_game"] == "Y")
             {
-                $gameStringHead    = $gameStringHead    . "  R  H  E (PERFECT GAME)";
-            } else {
-                $gameStringHead    = $gameStringHead    . "  R  H  E";
+                $gameStringHead    = $gameStringHead    . " (PERFECT GAME)";
             }
 
             $gameStringTop     = $gameStringTop     . " " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
