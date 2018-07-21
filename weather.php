@@ -145,7 +145,7 @@
     $i = 0;
     while ($i < 4)
     {
-        $d = $wa["daily"]["data"][$i];
+        $d = $weatherData["daily"]["data"][$i];
 
         // Use emoji for the weather status
         switch($d["icon"])
