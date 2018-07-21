@@ -21,7 +21,7 @@
     {
         global $favTeams;
         $favArray = explode(",", str_replace(" ", "", $favTeams));
-
+        
         if ($gameObj["status"]["status"] == "In Progress")
         {
             # These games are happening now
@@ -105,12 +105,18 @@
             }
         }
 
-        if($gameObj["status"]["status"] == "Warmup" || $gameObj["status"]["status"] == "Preview" || $gameObj["status"]["status"] == "Pre-Game")
+        if($gameObj["status"]["status"] == "Warmup" || $gameObj["status"]["status"] == "Preview" || $gameObj["status"]["status"] == "Pre-Game" || $gameObj["status"]["status"] == "Delayed Start")
         {
             # Game hasn't yet started
             $gameStringHead   = $gameObj["status"]["status"];
             $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
             $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
+
+            if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+            {
+                # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+            }
         }
         
         if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
