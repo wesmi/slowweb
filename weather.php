@@ -188,11 +188,11 @@
 
         echo "<tt>\r\n";
         echo "<li>";
-        echo date("D", $d["time"]) . " - ";
-        echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;";
-        echo "&#x1f5d3: $icon&nbsp;&nbsp;";
-        echo "&#x2614? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";
-        echo "&#x1f305: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;&#x1f303: " . date("H:i", $d["sunsetTime"]);
+        echo date("D", $d["time"]) . " - ";     // Day of week
+        echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;"; // High and low temps
+        echo "&#x1f5d3: $icon&nbsp;&nbsp;";     // Forecast condition for the day
+        echo "&#x2614? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";   // Rain?
+        echo "<br />&#x1f305: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;&#x1f303: " . date("H:i", $d["sunsetTime"]);      // Sunrise and sundown on new line
         echo "</li>\r\n</tt>\r\n";
         $i++;
     }
