@@ -21,6 +21,35 @@
     {
         global $favTeams;
         $favArray = explode(",", str_replace(" ", "", $favTeams));
+
+        if ($gameObj["status"]["status"] == "Postponed")
+        {
+            switch ($gameObj["status"]["ind"])
+            {
+                case "DI":
+                    $postponeReason = "Inclement weather";
+                    break;
+                case "DR":
+                    $postponeReason = "Rain";
+                    break;
+                default:
+                    $postponeReason = "Other";
+            }
+
+            # Game has been postponed so use final code and display reason
+            $gameStringHead   = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
+            $gameStringTop    = "Postponed - " . $postponeReason;
+
+            if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+            {
+                # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
+                $gameStringBottom = $gameObj["status"]["note"];
+            } else {
+                $gameStringBottom = "";
+            }
+            
+            $gameRunning == false;
+        }
         
         if ($gameObj["status"]["status"] == "In Progress")
         {
@@ -135,7 +164,7 @@
             echo "<div style=\"background-color:#66CCFF;\">";
         }
 
-        if ($gameRunning)
+        if ($gameRunning == true)
         {
             # Want to highlight which team is currently batting, so underline their line score, but only if the game is running
             echo "<u>" . str_replace(" ", "&nbsp;", $gameStringHead) . "</u><br />\r\n";
