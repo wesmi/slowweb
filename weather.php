@@ -123,7 +123,7 @@
         echo "Displaying forecast for $forecastPlaceName<br />\r\n";
     }
 
-    echo "<h2>Weather data time:</h2>" . date(DATE_RFC822, $weatherData['currently']['time']); 
+    echo "Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']); 
 
     echo "<h2>Current conditions:</h2><ul>" .
         "<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>" . 
@@ -190,9 +190,9 @@
         echo "<li>";
         echo date("D", $d["time"]) . " - ";
         echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;";
-        echo "Today: $icon&nbsp;&nbsp;";
-        echo "Rain? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";
-        echo "SUp: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;SDn: " . date("H:i", $d["sunsetTime"]);
+        echo "&#x1f5d3: $icon&nbsp;&nbsp;";
+        echo "&#x2614? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";
+        echo "&#x1f305: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;&#x1f303: " . date("H:i", $d["sunsetTime"]);
         echo "</li>\r\n</tt>\r\n";
         $i++;
     }
