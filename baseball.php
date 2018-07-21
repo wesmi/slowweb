@@ -65,7 +65,7 @@
                                                     . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
         }
 
-        if ($gameObj["status"]["status"] == "Final" || $gameObj["status"]["status"] == "Completed Early")
+        if ($gameObj["status"]["status"] == "Final" || $gameObj["status"]["status"] == "Completed Early" || $gameObj["status"]["status"] == "Game Over")
         {
             # Handler for final games, regardless of how they ended
             #
@@ -73,13 +73,13 @@
             #   Latter means done in fewer than 9 innings
             #   Former can mean more than 9 innings
             $gameStringHead   = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E";
-            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") 
-                                . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT) 
+            $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ")
+                                . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
+                                . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
                                 . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT);
-            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") 
-                                . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
-                                . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
+            $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ")
+                                . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT)
+                                . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT)
                                 . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
 
             if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
@@ -88,7 +88,7 @@
                 $gameStringTop = "<b>" . $gameStringTop . "</b>";
             } else {
                 # Home team won
-                $gameStringBottom = "<b>" . $gameStringBottom . "</b>"; 
+                $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
             }
 
             if (count($gameObj["linescore"]["inning"]) != 9)
@@ -97,7 +97,7 @@
                 # YYY  12 19  2  F/12
                 $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
             }
-            
+
             if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
             {
                 # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
@@ -118,7 +118,7 @@
                 $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
             }
         }
-        
+
         if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
         {
             $closeDiv = "</div>";
@@ -135,7 +135,7 @@
                 echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</u><br /><br />\r\n\r\n";                
+                echo "<u>" . str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv</u><br /><br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
@@ -144,7 +144,7 @@
             echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
             echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
         }
-        
+
         $closeDiv = "";
     }
 
@@ -157,7 +157,7 @@
     $url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
 
     # Put in beginnings of moving back and forth by date
-    
+
     if (is_numeric($_GET["d"]) && is_numeric($_GET["m"]) && is_numeric($_GET["y"]))
     {
         # All of the values are numeric so we can try to get them
