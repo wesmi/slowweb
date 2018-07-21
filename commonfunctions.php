@@ -46,7 +46,7 @@
         global $requiredCookie;
 
         # $doauth in config is set to true if we want to check, false if we don't care
-        if ($doauth)
+        if ($doauth == true)
         {   
             # Must be called before other outputs because it redirects via header
             #  If cookie is not set, exit
