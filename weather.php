@@ -123,8 +123,6 @@
         echo "Displaying forecast for $forecastPlaceName<br />\r\n";
     }
 
-    echo "Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']); 
-
     echo "<h2>Current conditions:</h2><ul>" .
         "<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>" . 
         "<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($currentWeather['windBearing']) . ".</li>" . 
@@ -199,8 +197,8 @@
     
     // Finish out the upcoming forecast segment
     echo "</ul>\r\n";
-    
-    echo "<small><a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a></small>\r\n";
+    echo "<small>Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']) . "<br />\r\n";
+    echo "<a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a></small>\r\n";
 
     // Landing page return
     landReturn();
