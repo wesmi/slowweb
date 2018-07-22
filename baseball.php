@@ -4,7 +4,7 @@
         # We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+        $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0 in config
         $favTeams = getenv("favTeams");
     }
 
