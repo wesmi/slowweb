@@ -53,7 +53,8 @@
                 break;
             
             case "In Progress":
-                # These games are happening now
+            case "Delayed":
+                # These games are happening now (also covering "Delayed" status and showing line score)
                 #
                 #      1  2  3  4  5  6  7  8  9  R  H  E
                 # XXX
@@ -102,6 +103,15 @@
                 $gameStringBottom  = $gameStringBottom  . " " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT) 
                                                         . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT) 
                                                         . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT);
+
+                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                {
+                    # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
+                    $gameStringBottom = $gameObj["status"]["note"];
+                } else {
+                    $gameStringBottom = "";
+                }
+
                 break;
 
             case "Final":
