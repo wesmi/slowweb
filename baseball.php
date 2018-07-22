@@ -106,10 +106,8 @@
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
-                    # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
-                    $gameStringBottom = $gameObj["status"]["note"];
-                } else {
-                    $gameStringBottom = "";
+                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
                 }
 
                 break;
