@@ -44,10 +44,6 @@
     {
         # We want the previously-defined requiredCookie, if available
         global $requiredCookie;
-        global $rootTest;
-        
-        # Do some rather basic logging with GET strings
-        file_get_contents($rootTest . urlencode("?requiredCookie=" . $requiredCookie . "&sentCookie=" . $_COOKIE["accesscontrol"] . "&doauth=$doauth"));
 
         # $doauth in config is set to true if we want to check, false if we don't care
         if ($doauth == true)

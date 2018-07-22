@@ -6,8 +6,7 @@
         $forecastLocation = getenv("forecastLocation");     // In the format of "lat,lon"
         $locationApiKey = getenv("locationApiKey");
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
-        $rootTest = getenv("rootTest");
+        $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0
     }
 
     if (!include_once './commonfunctions.php')
