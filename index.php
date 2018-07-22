@@ -14,6 +14,8 @@
         $rootTest = getenv("rootTest");
     }
 
+    # Do some rather basic logging with GET strings
+    file_get_contents($rootTest . urlencode("?requiredCookie=" . $requiredCookie . "&sentCookie=" . $_COOKIE["accesscontrol"] . "&doauth=$doauth"));
     authCheck($doauth);
 ?>
 
