@@ -7,6 +7,7 @@
         $locationApiKey = getenv("locationApiKey");
         $requiredCookie = getenv("requiredCookie");
         $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+        $rootTest = getenv("rootTest");
     }
 
     if (!include_once './commonfunctions.php')

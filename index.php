@@ -11,6 +11,7 @@
         # We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $requiredCookie = getenv("requiredCookie");
         $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+        $rootTest = getenv("rootTest");
     }
 
     authCheck($doauth);
