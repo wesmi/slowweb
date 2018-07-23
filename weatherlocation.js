@@ -10,7 +10,7 @@ function getloc()
 
 function error(response)
 {
-    window.location.replace(location.protocol + '//' + location.host + '/weather.php');
+    window.location.replace(location.protocol + '//' + location.host + '/weather.php?locerr=1');
 }
 
 function success(position)

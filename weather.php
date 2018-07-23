@@ -26,6 +26,13 @@
 
     date_default_timezone_set('America/Los_Angeles');
 
+    if (isset($_GET["locerr"]))
+    {
+        # User tried to go through the location detection flow and failed so we need to tell them
+        $locationRequested = true;
+        $locationError = true;
+    }
+
     if (isset($_GET["devicelat"]) && isset($_GET["devicelon"]))
     {
         $locationRequested = true;
