@@ -149,7 +149,7 @@
                 {
                     $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
                                         . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")"
-                                        . "  Sv: " . $gameObj["save_pitcher"]["name_display_roster"] . "(" . $gameObj["save_pitcher"]["saves"] . ")";
+                                        . "  Sv: " . $gameObj["save_pitcher"]["name_display_roster"] . " (" . $gameObj["save_pitcher"]["saves"] . ")";
                 } else {
                     $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
                                         . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")";
