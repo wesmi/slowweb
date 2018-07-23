@@ -57,7 +57,6 @@ Set these values, either as $ variables in a config.php or as Azure web app sett
 * alphaVantageKey
 * alphaVantageStocks
 * locationApiKey
-* doauth
 * installtype
 
 #### Require auth?
