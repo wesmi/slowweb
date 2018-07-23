@@ -121,12 +121,12 @@
                                     . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
                                     . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
                                     . " " . str_pad($gameObj["linescore"]["e"]["away"], 2, " ", STR_PAD_LEFT)
-                                    . "  (" . $gameObj["away_team_win"] . "-" . $gameObj["away_team_loss"] . ")";
+                                    . "  (" . $gameObj["away_win"] . "-" . $gameObj["away_loss"] . ")";
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ")
                                     . "  " . str_pad($gameObj["linescore"]["r"]["home"], 2, " ", STR_PAD_LEFT)
                                     . " " . str_pad($gameObj["linescore"]["h"]["home"], 2, " ", STR_PAD_LEFT)
                                     . " " . str_pad($gameObj["linescore"]["e"]["home"], 2, " ", STR_PAD_LEFT)
-                                    . "  (" . $gameObj["home_team_win"] . "-" . $gameObj["home_team_loss"] . ")";
+                                    . "  (" . $gameObj["home_win"] . "-" . $gameObj["home_loss"] . ")";
 
                 if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
                 {
@@ -148,16 +148,16 @@
                 if ($gameObj["save_pitcher"]["name_display_roster"] != "")
                 {
                     $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
-                                        . "(" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")"
+                                        . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")"
                                         . "  Sv: " . $gameObj["save_pitcher"]["name_display_roster"] . "(" . $gameObj["save_pitcher"]["saves"] . ")";
                 } else {
                     $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
-                                        . "(" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")";
+                                        . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")";
                 }
 
                 # Display losing pitcher
-                $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["losing_pitcher"]["name_display_roster"] 
-                                    . "(" . $gameObj["losing_pitcher"]["wins"] . "-" . $gameObj["losing_pitcher"]["losses"] . ")";
+                $gameStringBottom = $gameStringBottom . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"] 
+                                    . " (" . $gameObj["losing_pitcher"]["wins"] . "-" . $gameObj["losing_pitcher"]["losses"] . ")";
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
