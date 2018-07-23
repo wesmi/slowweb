@@ -20,8 +20,12 @@ You can do it two ways.
 
 ### Local install
 
+#### Pre-requisites
+
 * PHP 7.0 or better
 * php-json
+
+#### Steps
 
 * Copy the files to a suitable place
 * Set up config.php with the configuration values given below
@@ -30,9 +34,14 @@ You can do it two ways.
 
 ### Azure install
 
+#### Pre-requisites
+
 * Make a Linux-based Azure web app
 * Make a key vault resource, set up an override secret in it (see below for config settings)
 * Set up an Azure application and give it access to the key vault
+
+#### Steps
+
 * Sync the files however you like, probably git deployment (you can mirror this repo once it is public)
 * Set app settings with the configuration values given below
 * Set installtype to "azure"
@@ -50,6 +59,12 @@ Set these values, either as $ variables in a config.php or as Azure web app sett
 * locationApiKey
 * doauth
 * installtype
+
+#### Require auth?
+
+Set this value to 0 if you don't want pages to check for authentication (that is, the overridevalue codeword) before loading or 1 if you do.
+
+* doauth
 
 #### These are the values for the key vault app
 
