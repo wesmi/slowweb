@@ -137,11 +137,13 @@
                     $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
                 }
 
-                if (count($gameObj["linescore"]["inning"]) != 9)
+                //if (count($gameObj["linescore"]["inning"]) != 9)
+                if ($gameObj["status"]["inning"] != 9)
                 {
                     # Done in other than than 9 innings so note that on the bottom
                     # YYY  12 19  2  F/12
-                    $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+                    # $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+                    $gameStringBottom = $gameStringBottom . "  F/" . $gameObj["status"]["inning"];
                 }
 
                 # Display winning pitcher (and save pitcher if available)
