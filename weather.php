@@ -146,9 +146,9 @@
     // Do the next few days' forecast
     echo "<ul>\r\n";
 
-    // Set a limit of four days
-    $i = 0;
-    while ($i < 4)
+    // Set a limit of four days starting with tomorrow (so start with array entry 1)
+    $i = 1;
+    while ($i < 5)
     {
         $d = $weatherData["daily"]["data"][$i];
 
