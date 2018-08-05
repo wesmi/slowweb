@@ -4,10 +4,12 @@
         # We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0 in config file
+        //$doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0 in config file
+        $doauth = false;
         $favTeams = getenv("favTeams");
     }
 
+    $favTeams = "SEA,TEX";
     if (!include_once './commonfunctions.php')
     {
         # If this fails, exit because we need those functions
@@ -288,12 +290,41 @@
     if (isset($games["data"]["games"]["game"][0]))
     {
         # Multiple games are listed so loop
-        foreach ($games["data"]["games"]["game"] as $game)
+        # First show favorites at the top
+
+        $favArray = explode(",", str_replace(" ", "", $favTeams));
+        foreach ($games["data"]["games"]["game"] as $gamekey => $game)
         {
-            $gamesShown = true;
-            displayGameData($game);
+            if (in_array($game["away_name_abbrev"], $favArray) || in_array($game["home_name_abbrev"], $favArray))
+            {
+                displayGameData($game);
+                unset($games["data"]["games"]["game"][$gamekey]);
+                $gamesShown = true;
+            }
+        }
+
+        # Show running games next
+        foreach ($games["data"]["games"]["game"] as $gamekey => $game)
+        {
+            if ($game["status"]["status"] == "In Progress" || $game["status"]["status"] == "Delayed")
+            {
+                displayGameData($game);
+                unset($games["data"]["games"]["game"][$gamekey]);
+                $gamesShown = true;
+            }
+        }
+
+        # Show remainder of games
+        if (count($games["data"]["games"]["game"]) > 0)
+        {
+            foreach ($games["data"]["games"]["game"] as $game)
+            {
+                displayGameData($game);
+                $gamesShown = true;
+            }
         }
     } else {
+        # Only have a single game because the "links" property is set outside of an array
         if (isset($games["data"]["games"]["game"]["links"]))
         {
             $gamesShown = true;
