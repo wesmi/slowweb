@@ -17,6 +17,9 @@
 
     authCheck($doauth);
 
+    # Set default time zone to Pacific
+    date_default_timezone_set('America/Los_Angeles');
+
     function displayGameData($gameObj)
     {
         global $favTeams;
@@ -173,9 +176,10 @@
             case "Pre-Game":
             case "Delayed Start":
                 # Game hasn't yet started
+                $gameDateTime = date('g:iA', strtotime($gameObj["game_media"]["media"]["start"]));
                 $gameStringHead   = $gameObj["status"]["status"];
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameObj["home_time"] . " " . $gameObj["home_time_zone"];
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameDateTime;
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
