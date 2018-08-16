@@ -17,8 +17,14 @@
 
     authCheck($doauth);
 
-    # Set default time zone to Pacific
-    date_default_timezone_set('America/Los_Angeles');
+    if ($_GET["tz"] != "")
+    {
+        # Set the time zone to the one passed
+        date_default_timezone_set($_GET["tz"]);
+    } else {
+        # Set default time zone to Pacific
+        date_default_timezone_set('America/Los_Angeles');
+    }
 
     function displayGameData($gameObj)
     {
@@ -232,8 +238,6 @@
         $closeDiv = "";
     }
 
-    # Make sure the time zone is set to Pacific to build the proper game day URL
-    date_default_timezone_set('America/Los_Angeles');
     $year = date('Y');
     $month = date('m');
     $day = date('d');
