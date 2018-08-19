@@ -68,7 +68,13 @@
                 #      1  2  3  4  5  6  7  8  9  R  H  E
                 # XXX
                 # YYY
-                $gameStringHead   = "   ";
+                if ($gameObj["status"]["status"] == "Delayed")
+                {
+                    $gameStringHead   = "DEL";
+                } else {
+                    $gameStringHead   = "   ";
+                }
+
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
                 $gameRunning = true;
@@ -182,7 +188,7 @@
             case "Pre-Game":
             case "Delayed Start":
                 # Game hasn't yet started
-                $gameDateTime = date('g:iA', strtotime($gameObj["game_media"]["media"]["start"]));
+                $gameDateTime = date('g:iA T', strtotime($gameObj["game_media"]["media"]["start"]));
                 $gameStringHead   = $gameObj["status"]["status"];
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameDateTime;
