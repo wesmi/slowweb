@@ -6,6 +6,7 @@
         $forecastLocation = getenv("forecastLocation");     // In the format of "lat,lon"
         $locationApiKey = getenv("locationApiKey");
         $requiredCookie = getenv("requiredCookie");
+        $airnowApiKey = getenv("airnowApiKey");
         $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0
     }
 
@@ -109,6 +110,33 @@
         echo "Error fetching weather, response code: " . $httpResponse["response_code"];
         die;
     }
+    
+    # Now build the URL we'll use to make the call for air quality data
+    if ($airnowApiKey != "")
+    {
+        # Break apart $forecastLocation again because it's created earlier in all cases but separate variables for lat and lon aren't created
+        #   We know that it will always be in lat,lon format though
+        $splitLoc = explode(",", $forecastLocation);
+        $lat = $splitLoc[0];
+        $lon = $splitLoc[1];
+        $fullURL = "http://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=$lat&longitude=$lon&distance=25&API_KEY=$airnowApiKey";
+    } else {
+        # The API key wasn't loaded so die
+        echo "Error fetching configuration data.";
+        die;
+    }
+    
+    $response = file_get_contents($fullURL);
+    $httpResponse = parseHeaders($http_response_header);
+    if($httpResponse["response_code"] == 200)
+    {
+        # API returns a single-member array so, for cleanliness, set the downstream variable to the 0th entry
+        $aqiReply = json_decode($response, true);
+        $aqiData = $aqiReply[0];
+    } else {
+        echo "Error fetching AQI data, response code: " . $httpResponse["response_code"];
+        die;
+    }
 ?>
 <html>
 <head>
@@ -139,6 +167,7 @@
         "<li>Pressure: " . $currentWeather['pressure'] . "mB</li>" . 
         "<li>Relative humidity: " . ($currentWeather['humidity']*100) . "%</li>" . 
         "<li>Ozone density: " . $currentWeather['ozone'] . "</li>" . 
+        "<li>Air quality index: " . $aqiData['AQI'] . "(" . $aqiData["Category"]["Name"] . ")</li>" . 
         "</ul>\r\n";
 
     echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />";
@@ -205,7 +234,8 @@
     // Finish out the upcoming forecast segment
     echo "</ul>\r\n";
     echo "<small>Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']) . "<br />\r\n";
-    echo "<a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a></small>\r\n";
+    echo "Weather data: <a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a><br />\r\n";
+    echo "Air quality data: Courtesy of the EPA and <a href=\"https://www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
 
     // Landing page return
     landReturn();
