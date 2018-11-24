@@ -167,7 +167,7 @@
         "<li>Pressure: " . $currentWeather['pressure'] . "mB</li>" . 
         "<li>Relative humidity: " . ($currentWeather['humidity']*100) . "%</li>" . 
         "<li>Ozone density: " . $currentWeather['ozone'] . "</li>" . 
-        "<li>Air quality index: " . $aqiData['AQI'] . "(" . $aqiData["Category"]["Name"] . ")</li>" . 
+        "<li>Air quality index: " . $aqiData['AQI'] . " (" . $aqiData["Category"]["Name"] . ")</li>" . 
         "</ul>\r\n";
 
     echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />";
