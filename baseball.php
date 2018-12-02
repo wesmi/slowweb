@@ -161,7 +161,6 @@
                     $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
                 }
 
-                #if (count($gameObj["linescore"]["inning"]) != 9)
                 if ($gameObj["status"]["inning"] != 9)
                 {
                     # Done in other than than 9 innings so note that on the bottom
@@ -257,14 +256,14 @@
     $month = date('m');
     $day = date('d');
 
-    $url = "http:#gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
+    $url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
 
     # Put in beginnings of moving back and forth by date
 
     if (is_numeric($_GET["d"]) && is_numeric($_GET["m"]) && is_numeric($_GET["y"]))
     {
         # All of the values are numeric so we can try to get them
-        $url = "http:#gd2.mlb.com/components/game/mlb/year_" . $_GET["y"] . "/month_" . str_pad($_GET["m"], 2, "0", STR_PAD_LEFT) . "/day_" . str_pad($_GET["d"], 2, "0", STR_PAD_LEFT) . "/master_scoreboard.json";
+        $url = "http://gd2.mlb.com/components/game/mlb/year_" . $_GET["y"] . "/month_" . str_pad($_GET["m"], 2, "0", STR_PAD_LEFT) . "/day_" . str_pad($_GET["d"], 2, "0", STR_PAD_LEFT) . "/master_scoreboard.json";
     }
 
     # Fetch the relevant data

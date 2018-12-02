@@ -40,7 +40,7 @@
         $devicelat = round($_GET["devicelat"], 4);
         $devicelon = round($_GET["devicelon"] ,4);
         # Passed location from location detection page
-        $locationCheckURL = "https:#locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
+        $locationCheckURL = "https://locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
 
         $locationCheckResponse = file_get_contents($locationCheckURL);
         $httpResponse = parseHeaders($http_response_header);
@@ -61,7 +61,7 @@
 
         # Encode the location just in case
         $locationSearch = urlencode($_POST["location"]);
-        $locationURL = "https:#us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
+        $locationURL = "https://us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
         $locationError = false;     # We will use this later to inform the user about search results
         $locationRequested = true;
 
@@ -89,7 +89,7 @@
     # Build the URL we'll use to make the weather call
     if ($forecastApiKey != "")
     {
-        $fullURL = "https:#api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,alerts,flags";
+        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,alerts,flags";
     } else {
         # We made it all of the way here without the API key showing up so that's a fatal error
         echo "Error fetching configuration data.";
@@ -118,7 +118,7 @@
         $splitLoc = explode(",", $forecastLocation);
         $lat = $splitLoc[0];
         $lon = $splitLoc[1];
-        $fullURL = "http:#www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=$lat&longitude=$lon&distance=25&API_KEY=$airnowApiKey";
+        $fullURL = "http://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=$lat&longitude=$lon&distance=25&API_KEY=$airnowApiKey";
     } else {
         # The API key wasn't loaded so die
         echo "Error fetching configuration data.";
@@ -233,8 +233,8 @@
     # Finish out the upcoming forecast segment
     echo "</ul>\r\n";
     echo "<small>Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']) . "<br />\r\n";
-    echo "Weather data: <a href=\"https:#darksky.net/poweredby/\">Powered by DarkSky</a><br />\r\n";
-    echo "Air quality data: Courtesy of the EPA and <a href=\"https:#www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
+    echo "Weather data: <a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a><br />\r\n";
+    echo "Air quality data: Courtesy of the EPA and <a href=\"https://www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
 
     # Landing page return
     landReturn();
