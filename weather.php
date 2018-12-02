@@ -3,7 +3,7 @@
     {
         # We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $forecastApiKey = getenv("forecastApiKey");
-        $forecastLocation = getenv("forecastLocation");     // In the format of "lat,lon"
+        $forecastLocation = getenv("forecastLocation");     # In the format of "lat,lon"
         $locationApiKey = getenv("locationApiKey");
         $requiredCookie = getenv("requiredCookie");
         $airnowApiKey = getenv("airnowApiKey");
@@ -40,7 +40,7 @@
         $devicelat = round($_GET["devicelat"], 4);
         $devicelon = round($_GET["devicelon"] ,4);
         # Passed location from location detection page
-        $locationCheckURL = "https://locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
+        $locationCheckURL = "https:#locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
 
         $locationCheckResponse = file_get_contents($locationCheckURL);
         $httpResponse = parseHeaders($http_response_header);
@@ -61,8 +61,8 @@
 
         # Encode the location just in case
         $locationSearch = urlencode($_POST["location"]);
-        $locationURL = "https://us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
-        $locationError = false;     // We will use this later to inform the user about search results
+        $locationURL = "https:#us1.locationiq.org/v1/search.php?key=$locationApiKey&q=$locationSearch&format=json";
+        $locationError = false;     # We will use this later to inform the user about search results
         $locationRequested = true;
 
         # Do the fetch
@@ -79,7 +79,6 @@
             #  is usually the closest
             $forecastLocation = $locationData[0]["lat"] . "," . $locationData[0]["lon"];
             $forecastPlaceName = $locationData[0]["display_name"];
-            //echo "Our new forecast location would be: $testForecastLocation<br />\r\n";
         } else {
             # We didn't get a valid reply so DON'T reset the forecast location
             #  but DO set a marker to inform the user that location couldn't be found
@@ -90,7 +89,7 @@
     # Build the URL we'll use to make the weather call
     if ($forecastApiKey != "")
     {
-        $fullURL = "https://api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,alerts,flags";
+        $fullURL = "https:#api.forecast.io/forecast/$forecastApiKey/$forecastLocation?exclude=minutely,alerts,flags";
     } else {
         # We made it all of the way here without the API key showing up so that's a fatal error
         echo "Error fetching configuration data.";
@@ -119,7 +118,7 @@
         $splitLoc = explode(",", $forecastLocation);
         $lat = $splitLoc[0];
         $lon = $splitLoc[1];
-        $fullURL = "http://www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=$lat&longitude=$lon&distance=25&API_KEY=$airnowApiKey";
+        $fullURL = "http:#www.airnowapi.org/aq/observation/latLong/current/?format=application/json&latitude=$lat&longitude=$lon&distance=25&API_KEY=$airnowApiKey";
     } else {
         # The API key wasn't loaded so die
         echo "Error fetching configuration data.";
@@ -172,16 +171,16 @@
 
     echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />";
 
-    // Do the next few days' forecast
+    # Do the next few days' forecast
     echo "<ul>\r\n";
 
-    // Set a limit of four days starting with tomorrow (so start with array entry 1)
+    # Set a limit of four days starting with tomorrow (so start with array entry 1)
     $i = 1;
     while ($i < 5)
     {
         $d = $weatherData["daily"]["data"][$i];
 
-        // Use emoji for the weather status
+        # Use emoji for the weather status
         switch($d["icon"])
         {
             case "clear-day":
@@ -215,29 +214,29 @@
                 $icon = "&#x1f318";
                 break;
             default:
-                // If the API doesn't give us anything we expect, return a rainbow
+                # If the API doesn't give us anything we expect, return a rainbow
                 $icon = "&#x1f308";
                 break;
         }
 
         echo "<tt>\r\n";
         echo "<li>";
-        echo date("D", $d["time"]) . " - ";     // Day of week
-        echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;"; // High and low temps
-        echo "&#x1f5d3: $icon&nbsp;&nbsp;";     // Forecast condition for the day
-        echo "&#x2614? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";   // Rain?
-        echo "<br />&#x1f305: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;&#x1f303: " . date("H:i", $d["sunsetTime"]);      // Sunrise and sundown on new line
+        echo date("D", $d["time"]) . " - ";     # Day of week
+        echo "&#x1f53a: " . number_format($d["temperatureHigh"]) . "&nbsp;&nbsp;&#x2b07: " . number_format($d["temperatureLow"]) . "&nbsp;&nbsp;"; # High and low temps
+        echo "&#x1f5d3: $icon&nbsp;&nbsp;";     # Forecast condition for the day
+        echo "&#x2614? " . ($d["precipProbability"] * 100) . "%&nbsp;&nbsp;";   # Rain?
+        echo "<br />&#x1f305: " . date("H:i", $d["sunriseTime"]) . "&nbsp;&nbsp;&#x1f303: " . date("H:i", $d["sunsetTime"]);      # Sunrise and sundown on new line
         echo "</li>\r\n</tt>\r\n";
         $i++;
     }
     
-    // Finish out the upcoming forecast segment
+    # Finish out the upcoming forecast segment
     echo "</ul>\r\n";
     echo "<small>Weather data time: " . date(DATE_RFC822, $weatherData['currently']['time']) . "<br />\r\n";
-    echo "Weather data: <a href=\"https://darksky.net/poweredby/\">Powered by DarkSky</a><br />\r\n";
-    echo "Air quality data: Courtesy of the EPA and <a href=\"https://www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
+    echo "Weather data: <a href=\"https:#darksky.net/poweredby/\">Powered by DarkSky</a><br />\r\n";
+    echo "Air quality data: Courtesy of the EPA and <a href=\"https:#www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
 
-    // Landing page return
+    # Landing page return
     landReturn();
 ?>
 </body>
