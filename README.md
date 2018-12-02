@@ -14,10 +14,10 @@ You can do it two ways.
 
 ### Prerequisites
 
-* API key from AirNow (air quality index)
-* API key from Alphavantage (stock ticker data)
-* API key from Forecast.io (current weather data and forecast)
-* API key from LocationIQ (location lookups)
+* API key from [AirNow](https://docs.airnowapi.org/) (air quality index)
+* API key from [Alphavantage](https://www.alphavantage.co/support/#api-key) (stock ticker data)
+* API key from [DarkSky](https://darksky.net/dev) (current weather data and forecast)
+* API key from [LocationIQ](https://locationiq.com/register) (location lookups)
 
 ### Local install
 
