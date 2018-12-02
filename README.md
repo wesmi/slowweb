@@ -14,9 +14,10 @@ You can do it two ways.
 
 ### Prerequisites
 
-* API key from LocationIQ
-* API key from Alphavantage
-* API key from Forecast.io
+* API key from AirNow (air quality index)
+* API key from Alphavantage (stock ticker data)
+* API key from Forecast.io (current weather data and forecast)
+* API key from LocationIQ (location lookups)
 
 ### Local install
 
@@ -42,7 +43,7 @@ You can do it two ways.
 
 #### Steps
 
-* Sync the files however you like, probably git deployment (you can mirror this repo once it is public)
+* Sync the files however you like, probably git deployment (you can mirror this repo if you like)
 * Set app settings with the configuration values given below
 * Set installtype to "azure"
 * Set overridevalue to be the name of the secret stored in the key vault
@@ -51,13 +52,14 @@ You can do it two ways.
 
 Set these values, either as $ variables in a config.php or as Azure web app settings
 
-* requiredCookie
-* forecastApiKey
-* forecastLocation
+* airnowApiKey
 * alphaVantageKey
 * alphaVantageStocks
+* forecastApiKey
+* forecastLocation
 * locationApiKey
 * installtype
+* requiredCookie
 
 #### Require auth?
 
