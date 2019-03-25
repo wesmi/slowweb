@@ -167,7 +167,7 @@
                     $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
                 }
 
-                if ($gameObj["status"]["inning"] != 9)
+                if ($gameObj["status"]["inning"] != 9 && isset($gameObj["linescore"]["inning"][9]))
                 {
                     # Done in other than than 9 innings so note that on the bottom
                     # YYY  12 19  2  F/12
@@ -176,7 +176,7 @@
                 }
 
                 # Display winning pitcher (and save pitcher if available)
-                if ($gameObj["save_pitcher"]["name_display_roster"] != "")
+                if ($gameObj["save_pitcher"]["name_display_roster"] != "" && $gameObj["status"]["ind"] != "FT")
                 {
                     $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
                                         . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")"
