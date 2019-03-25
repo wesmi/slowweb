@@ -80,7 +80,7 @@
                 if ($gameObj["status"]["status"] == "Manager Challenge")
                 {
                     $gameStringHead   = "MGR";
-                } else 
+                } else {
                     $gameStringHead   = "   ";
                 }
 
