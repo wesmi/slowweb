@@ -163,8 +163,11 @@
                     # Away team won
                     $gameStringTop = "<b>" . $gameStringTop . "</b>";
                 } else {
-                    # Home team won
-                    $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
+                    if ($gameObj["status"]["ind"] != "FT")
+                    {
+                        # Home team won
+                        $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
+                    }
                 }
 
                 if ($gameObj["status"]["inning"] != 9 && isset($gameObj["linescore"]["inning"][9]))
