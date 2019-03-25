@@ -137,10 +137,16 @@
                 break;
 
             case "Final":
+            case "Final: Tied":
             case "Completed Early":
             case "Game Over":
                 # Handler for final games, regardless of how they ended
-                $gameStringHead   = "<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E&nbsp;&nbsp;(W-L)</u>";
+                if ($gameObj["status"]["ind"] == "FT")
+                {
+                    $gameStringHead   = "<u>Tie&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E&nbsp;&nbsp;(W-L)</u>";
+                } else {
+                    $gameStringHead   = "<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E&nbsp;&nbsp;(W-L)</u>";
+                }
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ")
                                     . "  " . str_pad($gameObj["linescore"]["r"]["away"], 2, " ", STR_PAD_LEFT)
                                     . " " . str_pad($gameObj["linescore"]["h"]["away"], 2, " ", STR_PAD_LEFT)
