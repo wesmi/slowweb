@@ -170,7 +170,7 @@
                     }
                 }
 
-                if ($gameObj["status"]["inning"] != 9 && isset($gameObj["linescore"]["inning"][9]))
+                if ($gameObj["status"]["inning"] != 9 && $gameObj["status"]["ind"] != "FT")
                 {
                     # Done in other than than 9 innings so note that on the bottom
                     # YYY  12 19  2  F/12
