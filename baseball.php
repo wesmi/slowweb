@@ -58,10 +58,10 @@
                 } else {
                     $gameStringBottom = "";
                 }
-                
+
                 $gameRunning == false;
                 break;
-            
+
             case "In Progress":
             case "Manager Challenge":
             case "Delayed":
@@ -208,10 +208,17 @@
             case "Pre-Game":
             case "Delayed Start":
                 # Game hasn't yet started
-                $gameDateTime = date('g:iA T', strtotime($gameObj["game_media"]["media"]["start"]));
-                $gameStringHead   = $gameObj["status"]["status"];
-                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . "  " . $gameDateTime;
+		if (isset($gameObj["game_media"]["media"][0]))
+		{
+		    # MLB enjoys messing with me and has put the start media in an array??
+		    $startTime = $gameObj["game_media"]["media"][0]["start"];
+		} else {
+		    $startTime = $gameObj["game_media"]["media"]["start"];
+		}
+                $gameDateTime = date('g:iA T', strtotime($startTime));
+                $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime;
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")";
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["opposing_pitcher"]["name_display_roster"] . " (" . $gameObj["opposing_pitcher"]["era"] . ")";
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
