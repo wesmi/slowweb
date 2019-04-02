@@ -181,9 +181,8 @@
                             # Predicted arrival time means regular color
                             #   Example:  4: Downtown Seattle - 12:15am (3, 4)
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
-                            $vehicle = str_replace("_", "" , $arrivals["vehicleId"]);
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
-                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . "(" . $vehicle . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
+                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
                                                 " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
                             echo str_replace(" ", "&nbsp;", $outputString) . "<br />\r\n";
                         } else {

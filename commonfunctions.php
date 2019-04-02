@@ -34,6 +34,87 @@
         }
     }
 
+function getBusIcon($id)
+	{
+		$vehicle = explode("_", $id);
+		$vehicle = $vehicle[1];
+		switch (true)
+		{
+			case in_array($vehicle, range(3200,3594)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(1100,1194)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(3600,3699)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(2600,2812)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6813,6865)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6000,6019)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(7001,7199)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6800,6999)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6020,6035)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6040,6073)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6075,6117)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(3700,3759)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(7200,7259)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(4300,4409)):
+				$bustype = "&#x1f68e;";
+				break;
+			case in_array($vehicle, range(6200,6219)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(4500,4563)):
+				$bustype = "&#x1f68e;&#x1f68e;";
+				break;
+			case in_array($vehicle, range(4601,4603)):
+				$bustype = "&#x1f50b;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(8000,8084)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(8100,8199)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(8200,8299)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(4604,4611)):
+				$bustype = "&#x1f50b;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(6220,6241)):
+				$bustype = "RR &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(7300,7439)):
+				$bustype = "&#x1f68c;";
+				break;
+		}
+
+		return $bustype;
+	}
+
+
     function landReturn()
     {
         # Function dumps out a horizontal rule and a landing page return footer
