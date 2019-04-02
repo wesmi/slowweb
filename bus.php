@@ -107,7 +107,6 @@
 <body>
     <tt>
         <?
-        
             $doStops = explode(",", $obaPrefStops);
 
             if ($routeResults)
@@ -115,18 +114,18 @@
                 echo "</tt>$responseString<tt>";
                 $doStops = array();
             }
-            
+
             if (isset($_GET["stopid"]))
             {
                 # Only supporting KCMetro (agency ID "1") stops
                 $doStops = array("1_" . $_GET["stopid"]);
             }
-            
+
             if ($locationRequested)
             {
                 # First, we clear out $doStops so it won't be processed later on
                 $doStops = array();
-                
+
                 # Now we go ask about nearby stops
                 $fullURL = "http://api.pugetsound.onebusaway.org/api/where/stops-for-location.json?key=$obaApiKey&lat=$devicelat&lon=$devicelon&radius=200";
                 $callResults = file_get_contents($fullURL);
@@ -154,7 +153,7 @@
                 {
                     echo "<li><a href=\"/bus.php?stopid=" . $stop["code"] . "\">" . $stop["code"] . "</a> - " . $stop["name"] . " (" . $stop["direction"] . ")</li>\r\n";
                 }
-                
+
                 echo "</ul>\r\n";
             }
 
@@ -182,8 +181,9 @@
                             # Predicted arrival time means regular color
                             #   Example:  4: Downtown Seattle - 12:15am (3, 4)
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
+                            $vehicle = str_replace("_", "" , $arrivals["vehicleId"]));
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
-                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
+                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . "(" . $vehicle . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
                                                 " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
                             echo str_replace(" ", "&nbsp;", $outputString) . "<br />\r\n";
                         } else {
