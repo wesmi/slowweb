@@ -109,6 +109,101 @@ function getBusIcon($id)
 			case in_array($vehicle, range(7300,7439)):
 				$bustype = "&#x1f68c;";
 				break;
+			case in_array($vehicle, range(9090,9091)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9092,9121)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9122,9123)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9124,9126)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9200,9200)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9201,9222)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9301,9312)):
+				$bustype = "Tall &#x1f68c;";
+				break;
+			case in_array($vehicle, range(9537,9552)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9553,9565)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9566,9583)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9584,9586)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9587,9596)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9600,9621)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9622,9623)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9624,9636)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9637,9647)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9648,9651)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9652,9659)):
+				$bustype = "Hi-seat &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9700,9712)):
+				$bustype = "Tall &#x1f68c;";
+				break;
+			case in_array($vehicle, range(9713,9719)):
+				$bustype = "Tall &#x1f68c;";
+				break;
+			case in_array($vehicle, range(9720,9722)):
+				$bustype = "Tall &#x1f68c;";
+				break;
+			case in_array($vehicle, range(9723,9739)):
+				$bustype = "Tall &#x1f68c;";
+				break;
+			case in_array($vehicle, range(9800,9813)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9814,9817)):
+				$bustype = "Hi-seat &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(9818,9822)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(41501,41517)):
+				$bustype = "&#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(41601,41605)):
+				$bustype = "&#x1f68c;";
+				break;
+			case in_array($vehicle, range(51401,51403)):
+				$bustype = "Hi-seat &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(61401,61407)):
+				$bustype = "Hi-seat &#x1f68c;&#x1f68c;";
+				break;
+			case in_array($vehicle, range(91501,91505)):
+				$bustype = "DD &#x1f68c;";
+				break;
+			case in_array($vehicle, range(91701,91732)):
+				$bustype = "DD &#x1f68c;";
+				break;
+			default:
+				$bustype = "no icon";
 		}
 
 		return $bustype;
