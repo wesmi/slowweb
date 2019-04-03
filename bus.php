@@ -185,7 +185,7 @@
                             $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" .
 						" - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
                                                 " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
-                            echo str_replace(" ", "&nbsp;", $outputString) . "<br />\r\n";
+                            echo str_replace(" ", "&nbsp;", $outputString) . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                         } else {
                             # No prediction means green and an asterisk for "scheduled arrival" and we don't consider predicted time
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000));
