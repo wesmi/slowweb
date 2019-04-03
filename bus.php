@@ -182,16 +182,17 @@
                             #   Example:  4: Downtown Seattle - 12:15am (3, 4)
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
-                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
+                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" .
+						" - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
                                                 " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
                             echo str_replace(" ", "&nbsp;", $outputString) . "<br />\r\n";
                         } else {
                             # No prediction means green and an asterisk for "scheduled arrival" and we don't consider predicted time
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000));
-                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " - " . 
+                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " - " .
                                                 date("h:ia", $arrivals["scheduledDepartureTime"]/1000) .
                                                 "* (" . $eta["minutes"] . ")";
-                            echo "<font color=\"#009000\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><br />\r\n";
+                            echo "<font color=\"#009000\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                         }
                     }
                 }
