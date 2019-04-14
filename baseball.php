@@ -139,6 +139,7 @@
             case "Final":
             case "Final: Tied":
             case "Completed Early":
+            case "Completed Early: Rain"
             case "Game Over":
                 # Handler for final games, regardless of how they ended
                 if ($gameObj["status"]["ind"] == "FT")
