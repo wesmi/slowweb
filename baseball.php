@@ -136,10 +136,11 @@
 
                 break;
 
-            case "Final":
             case "Final: Tied":
             case "Completed Early":
             case "Completed Early: Rain":
+                $otherEnding = true;
+            case "Final":
             case "Game Over":
                 # Handler for final games, regardless of how they ended
                 if ($gameObj["status"]["ind"] == "FT")
@@ -199,6 +200,11 @@
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
+                    if ($otherEnding)
+                    {
+                        # Game ended in some way other than being final, so display that first
+                        $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["status"];
+                    }
                     # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
                 }
@@ -209,13 +215,13 @@
             case "Pre-Game":
             case "Delayed Start":
                 # Game hasn't yet started
-		if (isset($gameObj["game_media"]["media"][0]))
-		{
-		    # MLB enjoys messing with me and has put the start media in an array??
-		    $startTime = $gameObj["game_media"]["media"][0]["start"];
-		} else {
-		    $startTime = $gameObj["game_media"]["media"]["start"];
-		}
+                if (isset($gameObj["game_media"]["media"][0]))
+                {
+                    # MLB enjoys messing with me and has put the start media in an array??
+                    $startTime = $gameObj["game_media"]["media"][0]["start"];
+                } else {
+                    $startTime = $gameObj["game_media"]["media"]["start"];
+                }
                 $gameDateTime = date('g:iA T', strtotime($startTime));
                 $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime;
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")";
