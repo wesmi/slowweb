@@ -71,7 +71,7 @@
                 #      1  2  3  4  5  6  7  8  9  R  H  E
                 # XXX
                 # YYY
-                if ($gameObj["status"]["status"] == "Delayed")
+                if (strpos($gameObj["status"]["status"], "Delayed") !== false)
                 {
                     $gameStringHead   = "DEL";
                 } else {
