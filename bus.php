@@ -176,7 +176,8 @@
                     {
                         # Sometimes stops have no trips so let's set a marker so we can display if no trips happened versus, say, an API error
                         $stopShown = true;
-                        if ($arrivals["predicted"] == "true")
+                        # Have to check for the departure time not equaling zero because sometimes the predicted flag is set but is empty
+                        if ($arrivals["predicted"] == "true" && $arrivals["predictedDepartureTime"]/1000 != 0)
                         {
                             # Predicted arrival time means regular color
                             #   Example:  4: Downtown Seattle - 12:15am (3, 4)
