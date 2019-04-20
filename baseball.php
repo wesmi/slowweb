@@ -65,6 +65,7 @@
             case "In Progress":
             case "Manager Challenge":
             case "Delayed":
+            case "Delayed: Rain":
                 # These games are happening now (also covering "Delayed" status and showing line score)
                 #
                 #      1  2  3  4  5  6  7  8  9  R  H  E
