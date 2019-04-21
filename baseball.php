@@ -136,7 +136,38 @@
                     # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
                 } else {
-                    $gameStringBottom = $gameStringBottom . "<br>\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . $gameObj["pbp"]["last"];
+                    switch ($gameObj["runners_on_base"]["status"])
+                    {
+                        case "0":
+                            $gameStringBottom = $gameStringBottom . "<br>--- ";
+                            break;
+                        case "1":
+                            $gameStringBottom = $gameStringBottom . "<br>--* ";
+                            break;
+                        case "2":
+                            $gameStringBottom = $gameStringBottom . "<br>-*- ";
+                            break;
+                        case "3":
+                            $gameStringBottom = $gameStringBottom . "<br>*-- ";
+                            break;
+                        case "4":
+                            $gameStringBottom = $gameStringBottom . "<br>-** ";
+                            break;
+                        case "5":
+                            $gameStringBottom = $gameStringBottom . "<br>*-* ";
+                            break;
+                        case "6":
+                            $gameStringBottom = $gameStringBottom . "<br>**- ";
+                            break;
+                        case "7":
+                            $gameStringBottom = $gameStringBottom . "<br>*** ";
+                            break;
+                        default:
+                            $gameStringBottom = $gameStringBottom . "<br>B" . $gameObj["runners_on_base"]["status"] . "  ";
+                            break;
+                    }
+
+                    $gameStringBottom = $gameStringBottom . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . $gameObj["pbp"]["last"];
                 }
 
                 break;
