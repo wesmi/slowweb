@@ -71,23 +71,25 @@
                 #      1  2  3  4  5  6  7  8  9  R  H  E
                 # XXX
                 # YYY
+
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
+                $gameOuts         = $gameObj["status"]["o"];
+                $gameRunning      = true;
+
                 if (strpos($gameObj["status"]["status"], "Delayed") !== false)
                 {
                     $gameStringHead   = "DEL";
                 } else {
-                    $gameStringHead   = "   ";
+                    $gameStringHead   = $gameOuts . " o";
                 }
 
                 if ($gameObj["status"]["status"] == "Manager Challenge")
                 {
                     $gameStringHead   = "MGR";
                 } else {
-                    $gameStringHead   = "   ";
+                    $gameStringHead   = $gameOuts . " o";
                 }
-
-                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
-                $gameRunning = true;
 
                 $currentInning = 1;
                 # Make a line score with each inning
