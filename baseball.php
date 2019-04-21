@@ -136,7 +136,7 @@
                     # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
                 } else {
-                    $gameStringBottom = $gameStringBottom . "<br>\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")<br>\r\n" . $gameObj["pbp"]["last"];
+                    $gameStringBottom = $gameStringBottom . "<br>\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . $gameObj["pbp"]["last"];
                 }
 
                 break;
