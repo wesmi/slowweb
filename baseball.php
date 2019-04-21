@@ -134,40 +134,40 @@
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
                     # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
-                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+                    $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["note"];
                 } else {
                     switch ($gameObj["runners_on_base"]["status"])
                     {
                         case "0":
-                            $gameStringBottom = $gameStringBottom . "<br>--- ";
+                            $gameStringFooter = $gameStringFooter . "--- ";
                             break;
                         case "1":
-                            $gameStringBottom = $gameStringBottom . "<br>--* ";
+                            $gameStringFooter = $gameStringFooter . "--* ";
                             break;
                         case "2":
-                            $gameStringBottom = $gameStringBottom . "<br>-*- ";
+                            $gameStringFooter = $gameStringFooter . "-*- ";
                             break;
                         case "3":
-                            $gameStringBottom = $gameStringBottom . "<br>*-- ";
+                            $gameStringFooter = $gameStringFooter . "*-- ";
                             break;
                         case "4":
-                            $gameStringBottom = $gameStringBottom . "<br>-** ";
+                            $gameStringFooter = $gameStringFooter . "-** ";
                             break;
                         case "5":
-                            $gameStringBottom = $gameStringBottom . "<br>*-* ";
+                            $gameStringFooter = $gameStringFooter . "*-* ";
                             break;
                         case "6":
-                            $gameStringBottom = $gameStringBottom . "<br>**- ";
+                            $gameStringFooter = $gameStringFooter . "**- ";
                             break;
                         case "7":
-                            $gameStringBottom = $gameStringBottom . "<br>*** ";
+                            $gameStringFooter = $gameStringFooter . "*** ";
                             break;
                         default:
-                            $gameStringBottom = $gameStringBottom . "<br>B" . $gameObj["runners_on_base"]["status"] . "  ";
+                            $gameStringFooter = $gameStringFooter . "B" . $gameObj["runners_on_base"]["status"] . "  ";
                             break;
                     }
 
-                    $gameStringBottom = $gameStringBottom . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . $gameObj["pbp"]["last"];
+                    $gameStringFooter = $gameStringFooter . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . $gameObj["pbp"]["last"];
                 }
 
                 break;
@@ -221,16 +221,16 @@
                     # Display winning pitcher (and save pitcher if available) but only if the end state isn't tied
                     if (!empty($gameObj["save_pitcher"]["name_display_roster"]))
                     {
-                        $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
+                        $gameStringFooter = $gameStringFooter . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
                                             . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")"
                                             . "  Sv: " . $gameObj["save_pitcher"]["name_display_roster"] . " (" . $gameObj["save_pitcher"]["saves"] . ")";
                     } else {
-                        $gameStringBottom = $gameStringBottom . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
+                        $gameStringFooter = $gameStringFooter . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
                                             . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")";
                     }
 
                     # Display losing pitcher
-                    $gameStringBottom = $gameStringBottom . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"] 
+                    $gameStringFooter = $gameStringFooter . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"] 
                                         . " (" . $gameObj["losing_pitcher"]["wins"] . "-" . $gameObj["losing_pitcher"]["losses"] . ")";
                 }
 
@@ -239,10 +239,10 @@
                     if ($otherEnding)
                     {
                         # Game ended in some way other than being final, so display that first
-                        $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["status"];
+                        $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["status"];
                     }
                     # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
-                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+                    $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["note"];
                 }
                 break;
 
@@ -298,10 +298,10 @@
             if ($gameObj["status"]["inning_state"] == "Top")
             {
                 echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringTop) . "</div>\r\n";
-                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
+                echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br />\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>$closeDiv<br />\r\n\r\n";
+                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
