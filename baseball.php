@@ -250,6 +250,7 @@
             case "Preview":
             case "Pre-Game":
             case "Delayed Start":
+            case "Delayed Start: Rain":
                 # Game hasn't yet started
                 if (isset($gameObj["game_media"]["media"][0]))
                 {
