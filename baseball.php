@@ -167,7 +167,7 @@
                             break;
                     }
 
-                    $gameStringFooter = $gameStringFooter . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . wordwrap($gameObj["pbp"]["last"], 60, "<br />\r\n");
+                    $gameStringFooter = $gameStringFooter . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . wordwrap($gameObj["pbp"]["last"], 60, "<br>\r\n");
                 }
 
                 break;
