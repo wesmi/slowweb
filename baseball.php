@@ -167,7 +167,7 @@
                             break;
                     }
 
-                    $gameStringFooter = $gameStringFooter . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . wordwrap($gameObj["pbp"]["last"], 60, "<br>\r\n");
+                    $gameStringFooter = $gameStringFooter . "\r\nAB: " . $gameObj["batter"]["name_display_roster"] . " (" . $gameObj["batter"]["avg"] . ")  P: " . $gameObj["pitcher"]["name_display_roster"] . " (" . $gameObj["pitcher"]["era"] . ")" . "<br>\r\n" . wordwrap($gameObj["pbp"]["last"], 50, "<br>\r\n");
                 }
 
                 break;
@@ -230,7 +230,7 @@
                     }
 
                     # Display losing pitcher
-                    $gameStringFooter = $gameStringFooter . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"] 
+                    $gameStringFooter = $gameStringFooter . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"]
                                         . " (" . $gameObj["losing_pitcher"]["wins"] . "-" . $gameObj["losing_pitcher"]["losses"] . ")";
                 }
 
@@ -302,7 +302,8 @@
                 echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br />\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
+                // echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
+                echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . $gameStringFooter . "$closeDiv<br /><br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
