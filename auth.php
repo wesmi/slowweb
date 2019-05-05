@@ -57,7 +57,7 @@
 </head>
 
 <body>
-<?
+<?php
     if ($result)
     {
         echo $message;
