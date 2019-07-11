@@ -261,8 +261,8 @@
                 }
                 $gameDateTime = date('g:iA T', strtotime($startTime));
                 $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime;
-                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")";
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["home_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["home_probable_pitcher"]["era"] . ")";
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $gameObj["broadcast"]["away"]["tv"];
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["home_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["home_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $gameObj["broadcast"]["home"]["tv"];
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
