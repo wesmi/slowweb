@@ -17,7 +17,7 @@
 
     authCheck($doauth);
 
-    if ($_GET["tz"] != "")
+    if (isset($_GET["tz"]))
     {
         # Set the time zone to the one passed
         date_default_timezone_set($_GET["tz"]);
@@ -30,11 +30,14 @@
     {
         global $favTeams;
         $favArray = explode(",", str_replace(" ", "", $favTeams));
+	$closeDiv = "";
+	$gameRunning = "";
 
         switch ($gameObj["status"]["status"])
         {
             case "Postponed":
             case "Suspended":
+            case "Suspended: Rain":
                 switch ($gameObj["status"]["ind"])
                 {
                     case "DI":
@@ -254,15 +257,30 @@
                 # Game hasn't yet started
                 if (isset($gameObj["game_media"]["media"][0]))
                 {
-                    # MLB enjoys messing with me and has put the start media in an array??
+                    // MLB enjoys messing with me and has put the start media in an array??
                     $startTime = $gameObj["game_media"]["media"][0]["start"];
                 } else {
                     $startTime = $gameObj["game_media"]["media"]["start"];
                 }
+
+		// Handling the case where the broadcast information is empty
+		if (is_array($gameObj["broadcast"]["away"]["tv"]))
+		{
+			$awayTv = "None";
+		} else {
+			$awayTv = $gameObj["broadcast"]["away"]["tv"];
+		}
+
+		if (is_array($gameObj["broadcast"]["home"]["tv"]))
+		{
+			$homeTv = "None";
+		} else {
+			$homeTv = $gameObj["broadcast"]["home"]["tv"];
+		}
                 $gameDateTime = date('g:iA T', strtotime($startTime));
                 $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime;
-                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $gameObj["broadcast"]["away"]["tv"];
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["home_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["home_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $gameObj["broadcast"]["home"]["tv"];
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $awayTv;
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["home_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["home_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $homeTv;
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
@@ -310,7 +328,7 @@
             # If the game isn't running, put out the data with no formatting
             echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
             echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-            echo str_replace(" ", "&nbsp;", $gameStringBottom) . $gameStringFooter . "$closeDiv<br /><br />\r\n\r\n";
+            echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
         }
 
         $closeDiv = "";
@@ -332,6 +350,7 @@
 
     # Fetch the relevant data
     $baseball = file_get_contents($url);
+    $backupFetched = false;
 
     # Make sure we got a good reply before proceeding since this is an "unofficial" API
     $httpResponse = parseHeaders($http_response_header);
@@ -366,6 +385,8 @@
     {
         echo "<!-- Fetched from backup URL -->\r\n";
     }
+
+   echo "<!-- fetched this URL: $url -->\r\n";
 ?>
 <tt>
 
