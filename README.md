@@ -15,7 +15,6 @@ You can do it two ways.
 ### Prerequisites
 
 * API key from [AirNow](https://docs.airnowapi.org/) (air quality index)
-* API key from [Alphavantage](https://www.alphavantage.co/support/#api-key) (stock ticker data)
 * API key from [DarkSky](https://darksky.net/dev) (current weather data and forecast)
 * API key from [LocationIQ](https://locationiq.com/register) (location lookups)
 
