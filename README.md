@@ -52,8 +52,6 @@ You can do it two ways.
 Set these values, either as $ variables in a config.php or as Azure web app settings
 
 * airnowApiKey
-* alphaVantageKey
-* alphaVantageStocks
 * forecastApiKey
 * forecastLocation
 * locationApiKey
