@@ -166,23 +166,28 @@
     }
 
     echo "<h2>Current conditions:</h2><ul>" .
-        "<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>" .
-        "<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($currentWeather['windBearing']) . ".</li>" .
-        "<li>Chance of rain: " . ($currentWeather['precipProbability']*100) . "%<br />" .
-        "<li>Nearest storm: " . $currentWeather['nearestStormDistance'] . " miles to the " . getCompassDirection($currentWeather['nearestStormBearing']) . ".</li>" .
-        "<li>Visibility: " . $currentWeather['visibility'] . " miles with " . ($currentWeather['cloudCover']*100) . "% cloud cover.</li>" .
-        "<li>Pressure: " . $currentWeather['pressure'] . "mB</li>" .
-        "<li>Relative humidity: " . ($currentWeather['humidity']*100) . "%</li>" .
-        "<li>Ozone density: " . $currentWeather['ozone'] . "</li>";
+        "<li>Air temperature: " . $currentWeather['temperature'] . "F / " . number_format((($currentWeather['temperature']-32)*5/9), $decimals=1) . "C.</li>\r\n" .
+        "<li>Wind speed: " . $currentWeather['windSpeed'] . "MPH from the " . getCompassDirection($currentWeather['windBearing']) . ".</li>\r\n" .
+        "<li>Chance of rain: " . ($currentWeather['precipProbability']*100) . "%</li>\r\n" .
+        "<li>Nearest storm: " . $currentWeather['nearestStormDistance'] . " miles to the " . getCompassDirection($currentWeather['nearestStormBearing']) . ".</li>\r\n" .
+        "<li>Visibility: " . $currentWeather['visibility'] . " miles with " . ($currentWeather['cloudCover']*100) . "% cloud cover.</li>\r\n" .
+        "<li>Pressure: " . $currentWeather['pressure'] . "mB</li>\r\n" .
+        "<li>Relative humidity: " . ($currentWeather['humidity']*100) . "%</li>\r\n" .
+        "<li>Ozone density: " . $currentWeather['ozone'] . "</li>\r\n";
 
     if(!empty($aqiData))
     {
-        echo "<li>Air quality index: " . $aqiData['AQI'] . " (" . $aqiData["Category"]["Name"] . ")</li>";
+        echo "<li>Air quality index: " . $aqiData['AQI'] . " (" . $aqiData["Category"]["Name"] . ")</li>\r\n";
     }
 
     echo "</ul>\r\n";
 
-    echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />";
+    if (empty($aqiData) && $forecastCountry == "us")
+    {
+        echo "<!-- AQI not pulled but country is US: $forecastCountry -->\r\n";
+    })
+
+    echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />\r\n";
 
     // Do the next few days' forecast
     echo "<ul>\r\n";
