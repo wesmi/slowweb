@@ -185,7 +185,7 @@
     if (empty($aqiData) && $forecastCountry == "us")
     {
         echo "<!-- AQI not pulled but country is US: $forecastCountry -->\r\n";
-    })
+    }
 
     echo "<h2>Upcoming weather:</h2>" . $weatherData['hourly']['summary'] . "<br />\r\n";
 
