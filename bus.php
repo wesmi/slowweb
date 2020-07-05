@@ -183,10 +183,20 @@
                             #   Example:  4: Downtown Seattle - 12:15am (3, 4)
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
-                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" .
-						" - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) .
-                                                " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
-                            echo str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                            $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) . " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
+
+                            if ($offSched["minutes"] > 3)
+                            {
+                                # Color red for behind schedule
+                                echo "<font color=\"#FF0000\">" . str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                            } elseif ($offSched["minutes"] < -3)
+                            {
+                                # Color red for ahead of schedule
+                                echo "<font color=\"#0000FF\">" . str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                            } else {
+                                echo str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                            }
+
                         } else {
                             # No prediction means green and an asterisk for "scheduled arrival" and we don't consider predicted time
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000));
