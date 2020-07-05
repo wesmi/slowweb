@@ -188,11 +188,11 @@
                             if ($offSched["minutes"] > 3)
                             {
                                 # Color red for behind schedule
-                                echo "<font color=\"#FF0000\">" . str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                                echo "<font color=\"#FF0000\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             } elseif ($offSched["minutes"] < -3)
                             {
                                 # Color red for ahead of schedule
-                                echo "<font color=\"#0000FF\">" . str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
+                                echo "<font color=\"#0000FF\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             } else {
                                 echo str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             }
