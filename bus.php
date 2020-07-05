@@ -185,11 +185,11 @@
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
                             $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) . " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
 
-                            if ($offSched["minutes"] > 3)
+                            if ($offSched["minutes"] > 2)
                             {
                                 # Color red for behind schedule
                                 echo "<font color=\"#FF0000\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
-                            } elseif ($offSched["minutes"] < -3)
+                            } elseif ($offSched["minutes"] < -2)
                             {
                                 # Color red for ahead of schedule
                                 echo "<font color=\"#0000FF\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
