@@ -1,16 +1,16 @@
 <?php
     if (!include_once './config.php')
     {
-        # We're OK if this dies because we can try loading from the environment, which The Cloud will do
+        // We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be 1 or 0 in config file
+        $doauth = boolval(getenv("doauth"));  // Special case, should be 1 or 0 in config file
         $favTeams = getenv("favTeams");
     }
 
     if (!include_once './commonfunctions.php')
     {
-        # If this fails, exit because we need those functions
+        // If this fails, exit because we need those functions
         echo "Error loading common functions module.";
         die;
     }
@@ -19,10 +19,10 @@
 
     if (isset($_GET["tz"]))
     {
-        # Set the time zone to the one passed
+        // Set the time zone to the one passed
         date_default_timezone_set($_GET["tz"]);
     } else {
-        # Set default time zone to Pacific
+        // Set default time zone to Pacific
         date_default_timezone_set('America/Los_Angeles');
     }
 
@@ -50,13 +50,13 @@
                         $postponeReason = "Other";
                 }
 
-                # Game has been postponed so use final code and display reason
+                // Game has been postponed so use final code and display reason
                 $gameStringHead   = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
                 $gameStringTop    = "Postponed - " . $postponeReason;
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
-                    # There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
+                    // There's a note about the game so add it to the "bottom" of the bottom game string (that, in this instance, is blank)
                     $gameStringBottom = $gameObj["status"]["note"];
                 } else {
                     $gameStringBottom = "";
@@ -69,11 +69,11 @@
             case "Manager Challenge":
             case "Delayed":
             case "Delayed: Rain":
-                # These games are happening now (also covering "Delayed" status and showing line score)
-                #
-                #      1  2  3  4  5  6  7  8  9  R  H  E
-                # XXX
-                # YYY
+                // These games are happening now (also covering "Delayed" status and showing line score)
+                // 
+                //      1  2  3  4  5  6  7  8  9  R  H  E
+                // XXX
+                // YYY
 
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ");
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
@@ -95,19 +95,19 @@
                 }
 
                 $currentInning = 1;
-                # Make a line score with each inning
+                // Make a line score with each inning
 
-                # The API doesn't return an array of innings if we're still in the first, so handle that case
+                // The API doesn't return an array of innings if we're still in the first, so handle that case
                 if ($gameObj["status"]["inning"] == "1")
                 {
-                    # We're in the first inning so build out the line score on that
+                    // We're in the first inning so build out the line score on that
                     $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
                     $gameStringTop     = $gameStringTop     . str_pad($gameObj["linescore"]["r"]["away"], 3, " ", STR_PAD_LEFT);
                     $gameStringBottom  = $gameStringBottom  . str_pad($gameObj["linescore"]["r"]["home"], 3, " ", STR_PAD_LEFT);
                 } else {
                     foreach($gameObj["linescore"]["inning"] as $inning)
                     {
-                        # We're out of the first so loop
+                        // We're out of the first so loop
                         $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
                         $gameStringTop     = $gameStringTop     . str_pad($inning["away"], 3, " ", STR_PAD_LEFT);
                         $gameStringBottom  = $gameStringBottom  . str_pad($inning["home"], 3, " ", STR_PAD_LEFT);
@@ -115,7 +115,7 @@
                     }
                 }
 
-                # Add the RHE suffix
+                // Add the RHE suffix
                 $gameStringHead    = $gameStringHead    . "  R  H  E";
                 if ($gameObj["status"]["is_no_hitter"] == "Y")
                 {
@@ -136,7 +136,7 @@
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
-                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["note"];
                 } else {
                     switch ($gameObj["runners_on_base"]["status"])
@@ -181,7 +181,7 @@
                 $otherEnding = true;
             case "Final":
             case "Game Over":
-                # Handler for final games, regardless of how they ended
+                // Handler for final games, regardless of how they ended
                 if ($gameObj["status"]["ind"] == "FT")
                 {
                     $gameStringHead   = "<u>Tie&nbsp;&nbsp;&nbsp;R&nbsp;&nbsp;H&nbsp;&nbsp;E&nbsp;&nbsp;(W-L)</u>";
@@ -201,27 +201,27 @@
 
                 if ($gameObj["linescore"]["r"]["away"] > $gameObj["linescore"]["r"]["home"])
                 {
-                    # Away team won
+                    // Away team won
                     $gameStringTop = "<b>" . $gameStringTop . "</b>";
                 } else {
                     if ($gameObj["status"]["ind"] != "FT")
                     {
-                        # Home team won
+                        // Home team won
                         $gameStringBottom = "<b>" . $gameStringBottom . "</b>";
                     }
                 }
 
                 if ($gameObj["status"]["inning"] != 9 && $gameObj["status"]["ind"] != "FT")
                 {
-                    # Done in other than than 9 innings so note that on the bottom
-                    # YYY  12 19  2  F/12
-                    # $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
+                    // Done in other than than 9 innings so note that on the bottom
+                    // YYY  12 19  2  F/12
+                    // $gameStringBottom = $gameStringBottom . "  F/" . count($gameObj["linescore"]["inning"]);
                     $gameStringBottom = $gameStringBottom . "  F/" . $gameObj["status"]["inning"];
                 }
 
                 if ($gameObj["status"]["ind"] != "FT")
                 {
-                    # Display winning pitcher (and save pitcher if available) but only if the end state isn't tied
+                    // Display winning pitcher (and save pitcher if available) but only if the end state isn't tied
                     if (!empty($gameObj["save_pitcher"]["name_display_roster"]))
                     {
                         $gameStringFooter = $gameStringFooter . "<br>\r\nWP: " . $gameObj["winning_pitcher"]["name_display_roster"] 
@@ -232,7 +232,7 @@
                                             . " (" . $gameObj["winning_pitcher"]["wins"] . "-" . $gameObj["winning_pitcher"]["losses"] . ")";
                     }
 
-                    # Display losing pitcher
+                    // Display losing pitcher
                     $gameStringFooter = $gameStringFooter . "<br>\r\nLP: " . $gameObj["losing_pitcher"]["name_display_roster"]
                                         . " (" . $gameObj["losing_pitcher"]["wins"] . "-" . $gameObj["losing_pitcher"]["losses"] . ")";
                 }
@@ -241,10 +241,10 @@
                 {
                     if ($otherEnding)
                     {
-                        # Game ended in some way other than being final, so display that first
+                        // Game ended in some way other than being final, so display that first
                         $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["status"];
                     }
-                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringFooter = $gameStringFooter . "<br>\r\n" . $gameObj["status"]["note"];
                 }
                 break;
@@ -254,7 +254,7 @@
             case "Pre-Game":
             case "Delayed Start":
             case "Delayed Start: Rain":
-                # Game hasn't yet started
+                // Game hasn't yet started
                 if (isset($gameObj["game_media"]["media"][0]))
                 {
                     // MLB enjoys messing with me and has put the start media in an array??
@@ -284,24 +284,24 @@
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
-                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
                 }
                 break;
 
             default:
-                # Some other game type we've not encountered
+                // Some other game type we've not encountered
                 $gameStringHead = "Unknown type: " . $gameObj["status"]["status"];
                 $gameStringTop = $gameObj["away_name_abbrev"] . " @ " . $gameObj["home_name_abbrev"];
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
-                    # There's a note about the game so add it to the "bottom" of the bottom game string as a new line
+                    // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameObj["status"]["note"];
                 } else {
                     $gameStringBottom = "";
                 }
                 break;
-            # End of switch statement
+            // End of switch statement
         }
 
         if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
@@ -312,7 +312,7 @@
 
         if ($gameRunning == true)
         {
-            # Want to highlight which team is currently batting, so underline their line score, but only if the game is running
+            // Want to highlight which team is currently batting, so underline their line score, but only if the game is running
             echo "<u>" . str_replace(" ", "&nbsp;", $gameStringHead) . "</u><br />\r\n";
             if ($gameObj["status"]["inning_state"] == "Top")
             {
@@ -320,12 +320,11 @@
                 echo str_replace(" ", "&nbsp;", $gameStringBottom) . "<br />\r\n" . $gameStringFooter . "$closeDiv<br /><br />\r\n\r\n";
             } else {
                 echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
-                // echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . str_replace(" ", "&nbsp;", $gameStringFooter) . "$closeDiv<br /><br />\r\n\r\n";
                 echo "<div style=\"background-color:#A9F5A9\">" . str_replace(" ", "&nbsp;", $gameStringBottom) . "</div>\r\n" . $gameStringFooter . "$closeDiv<br /><br />\r\n\r\n";
             }
             $gameRunning = false;
         } else {
-            # If the game isn't running, put out the data with no formatting
+            // If the game isn't running, put out the data with no formatting
             echo str_replace(" ", "&nbsp;", $gameStringHead) . "<br />\r\n";
             echo str_replace(" ", "&nbsp;", $gameStringTop) . "<br />\r\n";
             echo str_replace(" ", "&nbsp;", $gameStringBottom) . "$closeDiv<br /><br />\r\n\r\n";
@@ -340,25 +339,25 @@
 
     $url = "http://gd2.mlb.com/components/game/mlb/year_$year/month_$month/day_$day/master_scoreboard.json";
 
-    # Put in beginnings of moving back and forth by date
+    // Put in beginnings of moving back and forth by date
 
     if (is_numeric($_GET["d"]) && is_numeric($_GET["m"]) && is_numeric($_GET["y"]))
     {
-        # All of the values are numeric so we can try to get them
+        // All of the values are numeric so we can try to get them
         $url = "http://gd2.mlb.com/components/game/mlb/year_" . $_GET["y"] . "/month_" . str_pad($_GET["m"], 2, "0", STR_PAD_LEFT) . "/day_" . str_pad($_GET["d"], 2, "0", STR_PAD_LEFT) . "/master_scoreboard.json";
     }
 
-    # Fetch the relevant data
+    // Fetch the relevant data
     $baseball = file_get_contents($url);
     $backupFetched = false;
 
-    # Make sure we got a good reply before proceeding since this is an "unofficial" API
+    // Make sure we got a good reply before proceeding since this is an "unofficial" API
     $httpResponse = parseHeaders($http_response_header);
     if($httpResponse["response_code"] == 200)
     {
         $games = json_decode($baseball, true);
     } else {
-        # Try the backup
+        // Try the backup
         $backupFetched = true;
         $baseball = file_get_contents($baseballBackupUrl);
         if (strlen($baseball) < 50)
@@ -391,11 +390,11 @@
 <tt>
 
 <?php
-    # Have to handle the case where there's only one game in the result set
+    // Have to handle the case where there's only one game in the result set
     if (isset($games["data"]["games"]["game"][0]))
     {
-        # Multiple games are listed so loop
-        # First show favorites at the top
+        // Multiple games are listed so loop
+        // First show favorites at the top
 
         $favArray = explode(",", str_replace(" ", "", $favTeams));
         foreach ($games["data"]["games"]["game"] as $gamekey => $game)
@@ -408,7 +407,7 @@
             }
         }
 
-        # Show running games next
+        // Show running games next
         foreach ($games["data"]["games"]["game"] as $gamekey => $game)
         {
             if ($game["status"]["status"] == "In Progress" || $game["status"]["status"] == "Delayed")
@@ -419,7 +418,7 @@
             }
         }
 
-        # Show remainder of games
+        // Show remainder of games
         if (count($games["data"]["games"]["game"]) > 0)
         {
             foreach ($games["data"]["games"]["game"] as $game)
@@ -429,7 +428,7 @@
             }
         }
     } else {
-        # Only have a single game because the "links" property is set outside of an array
+        // Only have a single game because the "links" property is set outside of an array
         if (isset($games["data"]["games"]["game"]["links"]))
         {
             $gamesShown = true;
@@ -446,7 +445,7 @@
 ?>
 </tt>
 <?php
-    # Landing page return
+    // Landing page return
     landReturn();
 ?>
 </body>
