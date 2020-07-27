@@ -145,25 +145,25 @@
                             $gameStringFooter = $gameStringFooter . "--- ";
                             break;
                         case "1":
-                            $gameStringFooter = $gameStringFooter . "--* ";
+                            $gameStringFooter = $gameStringFooter . "--> ";
                             break;
                         case "2":
-                            $gameStringFooter = $gameStringFooter . "-*- ";
+                            $gameStringFooter = $gameStringFooter . "-^- ";
                             break;
                         case "3":
-                            $gameStringFooter = $gameStringFooter . "*-- ";
+                            $gameStringFooter = $gameStringFooter . "<-- ";
                             break;
                         case "4":
-                            $gameStringFooter = $gameStringFooter . "-** ";
+                            $gameStringFooter = $gameStringFooter . "-^> ";
                             break;
                         case "5":
-                            $gameStringFooter = $gameStringFooter . "*-* ";
+                            $gameStringFooter = $gameStringFooter . "<-> ";
                             break;
                         case "6":
-                            $gameStringFooter = $gameStringFooter . "**- ";
+                            $gameStringFooter = $gameStringFooter . "<^- ";
                             break;
                         case "7":
-                            $gameStringFooter = $gameStringFooter . "*** ";
+                            $gameStringFooter = $gameStringFooter . "<^> ";
                             break;
                         default:
                             $gameStringFooter = $gameStringFooter . "B" . $gameObj["runners_on_base"]["status"] . "  ";
