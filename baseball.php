@@ -47,7 +47,7 @@
                         $postponeReason = "Rain";
                         break;
                     default:
-                        $postponeReason = "Other";
+                        $postponeReason = "Other (" . $gameObj["status"]["ind"] . ")";
                 }
 
                 // Game has been postponed so use final code and display reason
