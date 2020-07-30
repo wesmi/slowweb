@@ -46,6 +46,9 @@
                     case "DR":
                         $postponeReason = "Rain";
                         break;
+                    case "DE":
+                        $postponeReason = "COVID-19";
+                        break;
                     default:
                         $postponeReason = "Other (" . $gameObj["status"]["ind"] . ")";
                 }
