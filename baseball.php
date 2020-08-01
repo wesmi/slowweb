@@ -29,9 +29,11 @@
     function displayGameData($gameObj)
     {
         global $favTeams;
+        global $colFavTeams;
         $favArray = explode(",", str_replace(" ", "", $favTeams));
-	$closeDiv = "";
-	$gameRunning = "";
+        $colFavArray = json_decode($colFavTeams, true);
+        $closeDiv = "";
+        $gameRunning = "";
 
         switch ($gameObj["status"]["status"])
         {
@@ -306,6 +308,16 @@
                 }
                 break;
             // End of switch statement
+        }
+
+        if (isset($colFavArray[$gameObj["home_name_abbrev"]]))
+        {
+            $closeDiv = "</div>";
+            echo "<div style=\"background-color:" . $colFavArray[$gameObj["home_name_abbrev"]] . "\">";
+        } elseif (isset($colFavArray[$gameObj["away_name_abbrev"]]))
+        {
+            $closeDiv = "</div>";
+            echo "<div style=\"background-color:" . $colFavArray[$gameObj["away_name_abbrev"]] . "\">";
         }
 
         if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
