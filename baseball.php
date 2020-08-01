@@ -313,11 +313,11 @@
         if (isset($colFavArray[$gameObj["home_name_abbrev"]]))
         {
             $closeDiv = "</div>";
-            echo "<div style=\"background-color:" . $colFavArray[$gameObj["home_name_abbrev"]["color"]] . "\">";
+            echo "<div style=\"background-color:" . $colFavArray[$gameObj["home_name_abbrev"]]["color"] . "\">";
         } elseif (isset($colFavArray[$gameObj["away_name_abbrev"]]))
         {
             $closeDiv = "</div>";
-            echo "<div style=\"background-color:" . $colFavArray[$gameObj["away_name_abbrev"]["color"]] . "\">";
+            echo "<div style=\"background-color:" . $colFavArray[$gameObj["away_name_abbrev"]]["color"] . "\">";
         }
 
         if ($gameRunning == true)
