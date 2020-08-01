@@ -1,28 +1,28 @@
 <?php
-    ## Common functions used among several files
+    #// Common functions used among several files
 
     function getObaStopData($stopid)
     {
-        # Asks the OBA API for arrivals and departures for a given stop, error checks, and then
-        #   decodes the data
+        // Asks the OBA API for arrivals and departures for a given stop, error checks, and then
+        //   decodes the data
 
-        # API URL format is: http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/STOPNUM.json?key=APIKEY
+        // API URL format is: http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/STOPNUM.json?key=APIKEY
 
         global $obaApiKey;
 
-        # Build the URL we'll use to make the weather call
+        // Build the URL we'll use to make the weather call
         if ($obaApiKey != "")
         {
             $fullURL = "http://api.onebusaway.org/api/where/arrivals-and-departures-for-stop/$stopid.json?key=$obaApiKey";
         } else {
-            # We made it all of the way here without the API key showing up so that's a fatal error
+            // We made it all of the way here without the API key showing up so that's a fatal error
             return false;
         }
 
-        # Fetch the data
+        // Fetch the data
         $response = file_get_contents($fullURL);
 
-        # Parse the HTTP headers and make sure we got a valid response
+        // Parse the HTTP headers and make sure we got a valid response
 
         $httpResponse = parseHeaders($http_response_header);
         if($httpResponse["response_code"] == 200)
@@ -203,7 +203,7 @@ function getBusIcon($id)
 				$bustype = "DD &#x1f68c;";
 				break;
 			default:
-				$bustype = "no icon";
+				$bustype = $vehicle;
 		}
 
 		return $bustype;
@@ -212,20 +212,20 @@ function getBusIcon($id)
 
     function landReturn()
     {
-        # Function dumps out a horizontal rule and a landing page return footer
+        // Function dumps out a horizontal rule and a landing page return footer
         echo "\r\n<br /><hr noshade /><a href=\"/\">Return to landing page</a>\r\n";
     }
 
     function authCheck($doauth)
     {
-        # We want the previously-defined requiredCookie, if available
+        // We want the previously-defined requiredCookie, if available
         global $requiredCookie;
 
-        # $doauth in config is set to true if we want to check, false if we don't care
+        // $doauth in config is set to true if we want to check, false if we don't care
         if ($doauth == true)
         {   
-            # Must be called before other outputs because it redirects via header
-            #  If cookie is not set, exit
+            // Must be called before other outputs because it redirects via header
+            //  If cookie is not set, exit
             if($_COOKIE["accesscontrol"] != $requiredCookie)
             {
                 header("Location: " . baseurl() . "/auth.php");
@@ -237,10 +237,10 @@ function getBusIcon($id)
 
     function getAzureKeyVaultValue($secretname, $keyvaultname, $appid, $tenant, $subscription, $appsecret)
     {
-        # This function gets ONLY the newest, enabled version of a secret and returns the value of the secret
-        #   as its response.  The secretname is presumed to be stored in the caller for use if needed.
+        // This function gets ONLY the newest, enabled version of a secret and returns the value of the secret
+        //   as its response.  The secretname is presumed to be stored in the caller for use if needed.
 
-        # Make the first call to get the bearer token
+        // Make the first call to get the bearer token
         $url = "https://login.windows.net/$tenant/oauth2/token";
         $postVals = array('resource' => 'https://vault.azure.net',
                             'client_id' => $appid,
@@ -265,8 +265,8 @@ function getBusIcon($id)
             $accesstoken = $azureReply["access_token"];
         }
 
-        # Once we have the access_token, make a request to the vault URL and ask for the secretname
-        # Versions of secrets are at: https://vaultname.vault.azure.net/secrets/secretname/versions?api-version=2016-10-01
+        // Once we have the access_token, make a request to the vault URL and ask for the secretname
+        // Versions of secrets are at: https://vaultname.vault.azure.net/secrets/secretname/versions?api-version=2016-10-01
 
         $url = "https://$keyvaultname.vault.azure.net/secrets/$secretname/versions?api-version=2016-10-01";
 
@@ -288,8 +288,8 @@ function getBusIcon($id)
             {
                 if ($s["attributes"]["enabled"] == "true")
                 {
-                    # Secret timestamps are stored as UNIX time so we can simply compare the numeric values without
-                    #   having to convert
+                    // Secret timestamps are stored as UNIX time so we can simply compare the numeric values without
+                    //   having to convert
                     if ($currenttimestamp < $s["attributes"]["created"])
                     {
                         $currenttimestamp = $s["attributes"]["created"];
@@ -313,7 +313,7 @@ function getBusIcon($id)
             $context = stream_context_create($options);
             $result = file_get_contents($url, false, $context);
 
-            ## TODO: Should we check the HTTP return code here?
+            #// TODO: Should we check the HTTP return code here?
             
             if ($result === FALSE)
             {
@@ -337,7 +337,7 @@ function getBusIcon($id)
             return $protocol . "://" . $_SERVER['HTTP_HOST'];
     }
 
-    # Courtesy of Mangall, http://php.net/manual/en/reserved.variables.httpresponseheader.php#117203
+    // Courtesy of Mangall, http://php.net/manual/en/reserved.variables.httpresponseheader.php#117203
     function parseHeaders( $headers )
     {
         $head = array();
@@ -356,7 +356,7 @@ function getBusIcon($id)
         return $head;
     }
 
-    # Courtesy of Doug Vanderweide, https://www.dougv.com/2009/07/calculating-the-bearing-and-compass-rose-direction-between-two-latitude-longitude-coordinates-in-php/
+    // Courtesy of Doug Vanderweide, https://www.dougv.com/2009/07/calculating-the-bearing-and-compass-rose-direction-between-two-latitude-longitude-coordinates-in-php/
     function getCompassDirection($bearing) {
         $tmp = round($bearing / 22.5);
         switch($tmp) {
