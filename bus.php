@@ -1,17 +1,17 @@
 <?php
     if (!include_once './config.php')
     {
-        # We're OK if this dies because we can try loading from the environment, which The Cloud will do
+        // We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $obaApiKey = getenv("obaApiKey");
         $obaPrefStops = getenv("obaPrefStops");
         $locationApiKey = getenv("locationApiKey");
         $requiredCookie = getenv("requiredCookie");
-        $doauth = boolval(getenv("doauth"));  # Special case, should be true or false
+        $doauth = boolval(getenv("doauth"));  // Special case, should be true or false
     }
 
     if (!include_once './commonfunctions.php')
     {
-        # If this fails, exit because we need those functions
+        // If this fails, exit because we need those functions
         echo "Error loading common functions module.";
         die;
     }
@@ -22,7 +22,7 @@
 
     if (isset($_POST["search"]))
     {
-        # Search has been done, gotta figure out which kind
+        // Search has been done, gotta figure out which kind
         switch($_POST["type"])
         {
             case "route":
@@ -82,7 +82,7 @@
         $locationRequested = true;
         $devicelat = round($_GET["devicelat"], 4);
         $devicelon = round($_GET["devicelon"] ,4);
-        # Passed location from location detection page
+        // Passed location from location detection page
         $locationCheckURL = "https://locationiq.org/v1/reverse.php?key=$locationApiKey&format=json&lat=$devicelat&lon=$devicelon&zoom=18&addressdetails=1";
 
         $locationCheckResponse = file_get_contents($locationCheckURL);
@@ -117,16 +117,16 @@
 
             if (isset($_GET["stopid"]))
             {
-                # Only supporting KCMetro (agency ID "1") stops
+                // Only supporting KCMetro (agency ID "1") stops
                 $doStops = array("1_" . $_GET["stopid"]);
             }
 
             if ($locationRequested)
             {
-                # First, we clear out $doStops so it won't be processed later on
+                // First, we clear out $doStops so it won't be processed later on
                 $doStops = array();
 
-                # Now we go ask about nearby stops
+                // Now we go ask about nearby stops
                 $fullURL = "http://api.pugetsound.onebusaway.org/api/where/stops-for-location.json?key=$obaApiKey&lat=$devicelat&lon=$devicelon&radius=200";
                 $callResults = file_get_contents($fullURL);
 
@@ -137,11 +137,11 @@
                     $stopJson = json_decode($callResults, true);
                     if ($stopJson["code"] > 399)
                     {
-                        # Set an empty array as that's a failure
+                        // Set an empty array as that's a failure
                         $stopsFound = array();
                         echo "No stops found near your location.<br />\r\n";
                     } else {
-                        # Display our stops
+                        // Display our stops
                         echo "Displaying stops near your location:<br /><ul>\r\n\r\n";
                         $stopsFound = $stopJson["data"]["list"];
                     }
@@ -159,46 +159,46 @@
 
             foreach ($doStops as $stop)
             {
-                # Get our stop data array from the common function
+                // Get our stop data array from the common function
                 $stopData = getObaStopData($stop);
 
                 if ($stopData)
                 {
-                    # Build the output string
+                    // Build the output string
                     #
-                    # Instead of one long string, output as we go to do the &nbsp; formatting
+                    // Instead of one long string, output as we go to do the &nbsp; formatting
                     #
-                    # Also the API has a lot of references and subreferences so there will be a lot of square brackets to follow
+                    // Also the API has a lot of references and subreferences so there will be a lot of square brackets to follow
 
                     $outputString = "<b>Stop:</b> " . $stopData["data"]["references"]["stops"][0]["name"];
                     echo str_replace(" ", "&nbsp;", $outputString) . "<br /><br />\r\n";
                     foreach ($stopData["data"]["entry"]["arrivalsAndDepartures"] as $arrivals)
                     {
-                        # Sometimes stops have no trips so let's set a marker so we can display if no trips happened versus, say, an API error
+                        // Sometimes stops have no trips so let's set a marker so we can display if no trips happened versus, say, an API error
                         $stopShown = true;
-                        # Have to check for the departure time not equaling zero because sometimes the predicted flag is set but is empty
+                        // Have to check for the departure time not equaling zero because sometimes the predicted flag is set but is empty
                         if ($arrivals["predicted"] == "true" && $arrivals["predictedDepartureTime"]/1000 != 0)
                         {
-                            # Predicted arrival time means regular color
-                            #   Example:  4: Downtown Seattle - 12:15am (3, 4)
+                            // Predicted arrival time means regular color
+                            //   Example:  4: Downtown Seattle - 12:15am (3, 4)
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
                             $offSched = getTimeDiff(date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000), date(DATE_RFC822, $arrivals["predictedDepartureTime"]/1000));
                             $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " (" . getBusIcon($arrivals["vehicleId"]) . ")" . " - " . date("h:ia", $arrivals["predictedDepartureTime"]/1000) . " (" . $eta["minutes"] . ", " . $offSched["minutes"] . ")";
 
                             if ($offSched["minutes"] > 2)
                             {
-                                # Color red for behind schedule
+                                // Color red for behind schedule
                                 echo "<font color=\"#FF0000\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             } elseif ($offSched["minutes"] < -2)
                             {
-                                # Color red for ahead of schedule
+                                // Color red for ahead of schedule
                                 echo "<font color=\"#0000FF\">" . str_replace(" ", "&nbsp;", $outputString) . "</font><!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             } else {
                                 echo str_replace(" ", "&nbsp;", $outputString) . "<!-- Sch: " . $arrivals["scheduledDepartureTime"] . " == Pred: " . $arrivals["predictedDepartureTime"] . " --><br />\r\n";
                             }
 
                         } else {
-                            # No prediction means green and an asterisk for "scheduled arrival" and we don't consider predicted time
+                            // No prediction means green and an asterisk for "scheduled arrival" and we don't consider predicted time
                             $eta = getTimeDiff(date(DATE_RFC822, time()), date(DATE_RFC822, $arrivals["scheduledDepartureTime"]/1000));
                             $outputString = $arrivals["routeShortName"] . ": " . $arrivals["tripHeadsign"] . " - " .
                                                 date("h:ia", $arrivals["scheduledDepartureTime"]/1000) .
