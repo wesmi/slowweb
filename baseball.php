@@ -317,7 +317,7 @@
             if (isset($colFavArray[$gameObj["home_name_abbrev"]]["invert"]))
             {
                 // Flag to invert (set white text on dark background) is set
-                echo "<div style=\"foreground-color:#FFFFFF; background-color:" . $colFavArray[$gameObj["home_name_abbrev"]]["color"] . "\">";
+                echo "<div style=\"color:#FFFFFF; background-color:" . $colFavArray[$gameObj["home_name_abbrev"]]["color"] . "\">";
             } else {
                 echo "<div style=\"background-color:" . $colFavArray[$gameObj["home_name_abbrev"]]["color"] . "\">";
             }
@@ -326,7 +326,7 @@
             $closeDiv = "</div>";
             if (isset($colFavArray[$gameObj["away_name_abbrev"]]["invert"]))
             {
-                echo "<div style=\"foreground-color:#FFFFFF; background-color:" . $colFavArray[$gameObj["away_name_abbrev"]]["color"] . "\">";
+                echo "<div style=\"color:#FFFFFF; background-color:" . $colFavArray[$gameObj["away_name_abbrev"]]["color"] . "\">";
             } else {
                 echo "<div style=\"background-color:" . $colFavArray[$gameObj["away_name_abbrev"]]["color"] . "\">";
             }
