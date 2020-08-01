@@ -320,12 +320,6 @@
             echo "<div style=\"background-color:" . $colFavArray[$gameObj["away_name_abbrev"]] . "\">";
         }
 
-        if (in_array($gameObj["away_name_abbrev"], $favArray) || in_array($gameObj["home_name_abbrev"], $favArray))
-        {
-            $closeDiv = "</div>";
-            echo "<div style=\"background-color:#66CCFF;\">";
-        }
-
         if ($gameRunning == true)
         {
             // Want to highlight which team is currently batting, so underline their line score, but only if the game is running
