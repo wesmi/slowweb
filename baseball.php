@@ -30,7 +30,6 @@
     {
         global $favTeams;
         global $colFavTeams;
-        $favArray = explode(",", str_replace(" ", "", $favTeams));
         $colFavArray = json_decode($colFavTeams, true);
         $closeDiv = "";
         $gameRunning = "";
@@ -418,10 +417,10 @@
         // Multiple games are listed so loop
         // First show favorites at the top
 
-        $favArray = explode(",", str_replace(" ", "", $favTeams));
+        $colFavArray = json_decode($colFavTeams, true);
         foreach ($games["data"]["games"]["game"] as $gamekey => $game)
         {
-            if (in_array($game["away_name_abbrev"], $favArray) || in_array($game["home_name_abbrev"], $favArray))
+            if (isset($colFavArray[$game["away_name_abbrev"]]) || isset($colFavArray[$game["home_name_abbrev"]]))
             {
                 displayGameData($game);
                 unset($games["data"]["games"]["game"][$gamekey]);
