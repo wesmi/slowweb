@@ -42,13 +42,13 @@
                 switch ($gameObj["status"]["ind"])
                 {
                     case "DI":
-                        $postponeReason = "Inclement weather";
+                        $postponeReason = "Inclement weather &#x1f328";
                         break;
                     case "DR":
-                        $postponeReason = "Rain";
+                        $postponeReason = "Rain &#x1f327";
                         break;
                     case "DE":
-                        $postponeReason = "COVID-19";
+                        $postponeReason = "COVID-19 &#x1f9a0";
                         break;
                     default:
                         $postponeReason = "Other (" . $gameObj["status"]["ind"] . ")";
