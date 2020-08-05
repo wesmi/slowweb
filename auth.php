@@ -1,7 +1,7 @@
 <?php
     if (!include_once './config.php')
     {
-        # We're OK if this dies because we can try loading from the environment, which The Cloud will do
+        // We're OK if this dies because we can try loading from the environment, which The Cloud will do
         $requiredCookie = getenv("requiredCookie");
         $appid = getenv("appid");
         $appsecret = getenv("appsecret");
@@ -14,15 +14,19 @@
 
     if (!include_once './commonfunctions.php')
     {
-        # If this fails, exit because we need those functions
+        // If this fails, exit because we need those functions
         echo "Error loading common functions module.";
         die;
     }
 
     $result = false;
+
     if (isset($_POST["checkauth"]))
     {
         // We've entered by asking for authentication so make sure
+        //
+        // We have to do the auth check first because we set a cookie if successful
+
         $checkvalue = $_POST["sentstring"];
         switch ($installtype)
         {
