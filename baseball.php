@@ -5,7 +5,6 @@
         $baseballBackupUrl = getenv("baseballBackupUrl");
         $requiredCookie = getenv("requiredCookie");
         $doauth = boolval(getenv("doauth"));  // Special case, should be 1 or 0 in config file
-        $favTeams = getenv("favTeams");
         $colFavTeams = getenv("colFavTeams");
     }
 
