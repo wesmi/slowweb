@@ -72,6 +72,7 @@
             case "In Progress":
             case "Manager Challenge":
             case "Manager challenge: Close play at 1st":
+            case "Manager challenge: Hit by pitch":
             case "Delayed":
             case "Delayed: Rain":
                 // These games are happening now (also covering "Delayed" status and showing line score)
