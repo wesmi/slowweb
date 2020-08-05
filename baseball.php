@@ -291,7 +291,7 @@
                     $awayEra = $gameObj["away_probable_pitcher"]["era"];
                 } else {
                     $awayPitcher = "TBD";
-                    $awayEra = "-.--";
+                    $awayEra = "-.-";
                 }
 
                 if (!empty($gameObj["home_probable_pitcher"]["name_display_roster"]))
