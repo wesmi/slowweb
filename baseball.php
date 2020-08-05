@@ -300,7 +300,7 @@
                     $homeEra = $gameObj["home_probable_pitcher"]["era"];
                 } else {
                     $homePitcher = "TBD";
-                    $homeEra = "-.--";
+                    $homeEra = "-.-";
                 }
 
                 $gameDateTime = date('g:iA T', strtotime($startTime));
