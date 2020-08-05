@@ -268,24 +268,44 @@
                     $startTime = $gameObj["game_media"]["media"]["start"];
                 }
 
-		// Handling the case where the broadcast information is empty
-		if (is_array($gameObj["broadcast"]["away"]["tv"]))
-		{
-			$awayTv = "None";
-		} else {
-			$awayTv = $gameObj["broadcast"]["away"]["tv"];
-		}
+                // Handling the case where the broadcast information is empty
+                if (is_array($gameObj["broadcast"]["away"]["tv"]))
+                {
+                    $awayTv = "None";
+                } else {
+                    $awayTv = $gameObj["broadcast"]["away"]["tv"];
+                }
 
-		if (is_array($gameObj["broadcast"]["home"]["tv"]))
-		{
-			$homeTv = "None";
-		} else {
-			$homeTv = $gameObj["broadcast"]["home"]["tv"];
-		}
+                if (is_array($gameObj["broadcast"]["home"]["tv"]))
+                {
+                    $homeTv = "None";
+                } else {
+                    $homeTv = $gameObj["broadcast"]["home"]["tv"];
+                }
+
+                // Handling where pitcher info is impty
+                if (is_array($gameObj["away_probable_pitcher"]))
+                {
+                    $awayPitcher = $gameObj["away_probable_pitcher"]["name_display_roster"];
+                    $awayEra = $gameObj["away_probable_pitcher"]["era"];
+                } else {
+                    $awayPitcher = "TBD";
+                    $awayEra = "-.--";
+                }
+
+                if (is_array($gameObj["home_probable_pitcher"]))
+                {
+                    $homePitcher = $gameObj["home_probable_pitcher"]["name_display_roster"];
+                    $homeEra = $gameObj["home_probable_pitcher"]["era"];
+                } else {
+                    $homePitcher = "TBD";
+                    $homeEra = "-.--";
+                }
+
                 $gameDateTime = date('g:iA T', strtotime($startTime));
                 $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime;
-                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $gameObj["away_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["away_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $awayTv;
-                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $gameObj["home_probable_pitcher"]["name_display_roster"] . " (" . $gameObj["home_probable_pitcher"]["era"] . ")" . " &#x1F4FA " . $homeTv;
+                $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $awayPitcher . " (" . $awayEra . ")" . " &#x1F4FA " . $awayTv;
+                $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $homePitcher . " (" . $homeEra . ")" . " &#x1F4FA " . $homeTv;
 
                 if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
                 {
