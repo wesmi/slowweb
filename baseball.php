@@ -284,7 +284,7 @@
                 }
 
                 // Handling where pitcher info is impty
-                if (is_array($gameObj["away_probable_pitcher"]))
+                if (!empty($gameObj["away_probable_pitcher"]["name_display_roster"]))
                 {
                     $awayPitcher = $gameObj["away_probable_pitcher"]["name_display_roster"];
                     $awayEra = $gameObj["away_probable_pitcher"]["era"];
@@ -293,7 +293,7 @@
                     $awayEra = "-.--";
                 }
 
-                if (is_array($gameObj["home_probable_pitcher"]))
+                if (!empty($gameObj["home_probable_pitcher"]["name_display_roster"]))
                 {
                     $homePitcher = $gameObj["home_probable_pitcher"]["name_display_roster"];
                     $homeEra = $gameObj["home_probable_pitcher"]["era"];
@@ -307,10 +307,10 @@
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $awayPitcher . " (" . $awayEra . ")" . " &#x1F4FA " . $awayTv;
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $homePitcher . " (" . $homeEra . ")" . " &#x1F4FA " . $homeTv;
 
-                if (isset($gameObj["status"]["note"]) && $gameObj["status"]["note"] != "")
+                if (!empty($game["description"]))
                 {
                     // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
-                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["status"]["note"];
+                    $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["description"];
                 }
                 break;
 
