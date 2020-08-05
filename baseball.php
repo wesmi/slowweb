@@ -307,7 +307,7 @@
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $awayPitcher . " (" . $awayEra . ")" . " &#x1F4FA " . $awayTv;
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $homePitcher . " (" . $homeEra . ")" . " &#x1F4FA " . $homeTv;
 
-                if (!empty($game["description"]))
+                if (!empty($gameObj["description"]))
                 {
                     // There's a note about the game so add it to the "bottom" of the bottom game string as a new line
                     $gameStringBottom = $gameStringBottom . "<br>\r\n" . $gameObj["description"];
