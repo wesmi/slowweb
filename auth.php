@@ -24,14 +24,16 @@
     {
         // We've entered by asking for authentication so make sure
         $checkvalue = $_POST["sentstring"];
-        if ($installtype == "onprem")
+        switch ($installtype)
         {
-            $thesecret = $overridevalue;
-        }
-
-        if ($installtype == "azure")
-        {
-            $thesecret = getAzureKeyVaultValue($overridevalue, $keyvaultname, $appid, $tenant, $subscription, $appsecret);
+            case "onprem":
+                $thesecret = $overridevalue;
+                break;
+            case "azure":
+                $thesecret = getAzureKeyVaultValue($overridevalue, $keyvaultname, $appid, $tenant, $subscription, $appsecret);
+                break;
+            default:
+                $thesecret = $overridevalue;
         }
 
         if ($checkvalue == $thesecret)
