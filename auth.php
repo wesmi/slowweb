@@ -68,10 +68,10 @@
     {
         echo $message;
     } else {
-        if ($message)
-        {
-            echo $message . "<br /><br /><a href=\"/\">Click here to go back home</a>\r\n";
-        }
+    if (!empty($message))
+    {
+        echo $message . "<br /><br /><a href=\"/\">Click here to go back home</a>\r\n";
+    }
 ?>
 <form method="post" action="<?php baseurl() . "/auth.php"; ?>">
     Enter access code: <input type="text" name="sentstring"><br /><br />
