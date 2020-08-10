@@ -255,7 +255,11 @@
 
     if (!empty($aqiData))
     {
+        // Output air quality data if we have it
         echo "Air quality data: Courtesy of the EPA and <a href=\"https://www.airnow.gov/index.cfm?action=airnow.partnerslist\">participating AirNow partner agencies</a></small>\r\n";
+    } else {
+        // Otherwise, close the small tag
+        echo "</small>\r\n";
     }
 
     // Landing page return
