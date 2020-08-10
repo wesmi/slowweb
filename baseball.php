@@ -90,19 +90,9 @@
                 if (strpos($gameObj["status"]["status"], "Suspended") !== false)
                 {
                     $gameStringHead   = "SUS";
-                } else {
-                    $gameStringHead   = $gameOuts . " o";
-                }
-
-                if (strpos($gameObj["status"]["status"], "Delayed") !== false)
-                {
+                } elseif (strpos($gameObj["status"]["status"], "Delayed") !== false) {
                     $gameStringHead   = "DEL";
-                } else {
-                    $gameStringHead   = $gameOuts . " o";
-                }
-
-                if ($gameObj["status"]["status"] == "Manager Challenge")
-                {
+                } elseif ($gameObj["status"]["status"] == "Manager Challenge") {
                     $gameStringHead   = "MGR";
                 } else {
                     $gameStringHead   = $gameOuts . " o";
