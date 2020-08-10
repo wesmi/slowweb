@@ -37,8 +37,6 @@
         switch ($gameObj["status"]["status"])
         {
             case "Postponed":
-            case "Suspended":
-            case "Suspended: Rain":
                 switch ($gameObj["status"]["ind"])
                 {
                     case "DI":
@@ -75,7 +73,10 @@
             case "Manager challenge: Hit by pitch":
             case "Delayed":
             case "Delayed: Rain":
-                // These games are happening now (also covering "Delayed" status and showing line score)
+            case "Suspended":
+            case "Suspended: Rain":
+            case "Suspended: Wet Grounds":
+                // These games are happening now (also covering "Delayed" and "Suspended" in progress status and showing line score)
                 // 
                 //      1  2  3  4  5  6  7  8  9  R  H  E
                 // XXX
@@ -85,6 +86,13 @@
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ");
                 $gameOuts         = $gameObj["status"]["o"];
                 $gameRunning      = true;
+
+                if (strpos($gameObj["status"]["status"], "Suspended") !== false)
+                {
+                    $gameStringHead   = "SUS";
+                } else {
+                    $gameStringHead   = $gameOuts . " o";
+                }
 
                 if (strpos($gameObj["status"]["status"], "Delayed") !== false)
                 {
