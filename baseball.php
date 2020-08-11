@@ -301,9 +301,9 @@
                     $homeEra = "-.-";
                 }
 
-                $gameLocation = $gameObj["venue"] . " - " . $gameObj["location"];
+                $gameLocation = $gameObj["venue"];
                 $gameDateTime = date('g:iA T', strtotime($startTime));
-                $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime . "  " . $gameLocation;
+                $gameStringHead   = $gameObj["status"]["status"] . "  " . $gameDateTime . " @ " . $gameLocation;
                 $gameStringTop    = str_pad($gameObj["away_name_abbrev"], 3, " ") . " SP: " . $awayPitcher . " (" . $awayEra . ")" . " &#x1F4FA " . $awayTv;
                 $gameStringBottom = str_pad($gameObj["home_name_abbrev"], 3, " ") . " SP: " . $homePitcher . " (" . $homeEra . ")" . " &#x1F4FA " . $homeTv;
 
