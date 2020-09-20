@@ -71,6 +71,7 @@
             case "Manager Challenge":
             case "Manager challenge: Close play at 1st":
             case "Manager challenge: Hit by pitch":
+            case "Manager challenge: Force play":
             case "Delayed":
             case "Delayed: Rain":
             case "Suspended":
