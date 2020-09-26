@@ -103,7 +103,8 @@
                 // Make a line score with each inning
 
                 // The API doesn't return an array of innings if we're still in the first, so handle that case
-                if ($gameObj["status"]["inning"] == "1")
+                //  And sometimes the API doesn't return data for the 2nd inning even though it shows top 2 so...
+                if ($gameObj["status"]["inning"] == "1" || !is_array($gameObj["linescore"]["inning"])[1])
                 {
                     // We're in the first inning so build out the line score on that
                     $gameStringHead    = $gameStringHead    . str_pad($currentInning, 3, " ", STR_PAD_LEFT);
